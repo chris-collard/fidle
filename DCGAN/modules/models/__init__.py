@@ -1,0 +1,1 @@
+from modules.models.DCGAN import DCGAN
