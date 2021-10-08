@@ -265,6 +265,7 @@ def shuffle_np_dataset(x, y):
     p = np.random.permutation(len(x))
     return x[p], y[p]
 
+
 def rescale_dataset(*data, scale=1):
     '''
     Rescale numpy array with 'scale' factor

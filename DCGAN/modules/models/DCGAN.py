@@ -73,8 +73,7 @@ class DCGAN(keras.Model):
         return [self.d_loss_metric, self.g_loss_metric]
 
 
-
-    def train_step(self, input):
+    def train_step(self, inputs):
         '''
         Implementation of the training update.
         Receive some real images.
@@ -91,25 +90,18 @@ class DCGAN(keras.Model):
         # ----------------------------------------------------------
         #        
         # ---- Get the input we need, specified in the .fit()
+        #      inputs is a tuple of tensors
         #
-        if isinstance(input, tuple):
-            real_images = input[0]
+        if isinstance(inputs, tuple):
+            real_images = inputs[0]
 
         batch_size=tf.shape(real_images)[0]
 
-        print('batch size = ', batch_size)
-        print('real images',real_images)
-
         # Get some random points in the latent space
-        # batch_size = tf.shape(real_images)[0]
-        # random_latent_vectors = tf.random.normal(shape=(batch_size, self.latent_dim))
-        random_latent_vectors = np.random.uniform( size=(32, self.latent_dim) )
-
+        random_latent_vectors = tf.random.normal(shape=(batch_size, self.latent_dim))
 
         # Generate fake images with the generator
         generated_images = self.generator(random_latent_vectors)
-
-        print('generated images shape =',generated_images.shape)
 
         # Combine them with real images
         combined_images = tf.concat([generated_images, real_images], axis=0)
