@@ -94,6 +94,8 @@ class DCGAN(keras.Model):
         #
         if isinstance(inputs, tuple):
             real_images = inputs[0]
+        else:
+            real_images = inputs
 
         batch_size=tf.shape(real_images)[0]
 
