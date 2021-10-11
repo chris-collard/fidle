@@ -26,6 +26,8 @@ class DCGAN(keras.Model):
 
     version = '1.0'
 
+
+
     def __init__(self, discriminator=None, generator=None, latent_dim=100, **kwargs):
         '''
         DCGAN instantiation with a given discriminator and generator
@@ -41,20 +43,21 @@ class DCGAN(keras.Model):
         self.generator     = generator
         self.latent_dim    = latent_dim
         print(f'Fidle DCGAN is ready :-)  latent dim = {latent_dim}')
-       
+
+
         
-    # def call(self, inputs):
-    #     '''
-    #     When we use our model
-    #     args:
-    #         inputs : Model inputs
-    #     return:
-    #         output : Output of the model 
-    #     '''
-    #     z_mean, z_log_var, z = self.encoder(inputs)
-    #     output               = self.decoder(z)
-    #     return output
+    def call(self, inputs):
+        '''
+        Implementation of the model forward pass
+        args:
+            inputs : vectors from latent space
+        return:
+            output : Output of the generator
+        '''
+        outputs = self.generator(inputs)
+        return outputs
                 
+
 
     def compile(self, 
                 discriminator_optimizer = keras.optimizers.Adam(), 
@@ -68,9 +71,11 @@ class DCGAN(keras.Model):
         self.g_loss_metric = keras.metrics.Mean(name="g_loss")
 
 
+
     @property
     def metrics(self):
         return [self.d_loss_metric, self.g_loss_metric]
+
 
 
     def train_step(self, inputs):
@@ -181,61 +186,38 @@ class DCGAN(keras.Model):
             "g_loss": self.g_loss_metric.result(),
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
-    
-    def predict(self,inputs):
-        '''Our predict function...'''
-        z_mean, z_var, z  = self.encoder.predict(inputs)
-        outputs           = self.decoder.predict(z)
-        return outputs
+    # def predict(self,inputs):
+    #     '''Our predict function...'''
+    #     z_mean, z_var, z  = self.encoder.predict(inputs)
+    #     outputs           = self.decoder.predict(z)
+    #     return outputs
 
         
     def save(self,filename):
         '''Save model in 2 part'''
-        filename, extension = os.path.splitext(filename)
-        self.encoder.save(f'{filename}-encoder.h5')
-        self.decoder.save(f'{filename}-decoder.h5')
+        save_dir             = os.path.dirname(filename)
+        filename, _extension = os.path.splitext(filename)
+        # ---- Create directory if needed
+        os.makedirs(save_dir, mode=0o750, exist_ok=True)
+        # ---- Save models
+        self.discriminator.save( f'{filename}-discriminator.h5' )
+        self.generator.save(     f'{filename}-generator.h5'     )
 
     
     def reload(self,filename):
-        '''Reload a 2 part saved model.'''
+        '''Reload a 2 part saved model.
+        Note : to train it, you need to .compile() it...'''
         filename, extension = os.path.splitext(filename)
-        self.encoder = keras.models.load_model(f'{filename}-encoder.h5', custom_objects={'SamplingLayer': SamplingLayer})
-        self.decoder = keras.models.load_model(f'{filename}-decoder.h5')
+        self.discriminator = keras.models.load_model(f'{filename}-discriminator.h5', compile=False)
+        self.generator     = keras.models.load_model(f'{filename}-generator.h5'    , compile=False)
         print('Reloaded.')
                 
         
     @classmethod
     def about(cls):
         '''Basic whoami method'''
-        display(Markdown('<br>**FIDLE 2021 - VAE**'))
+        display(Markdown('<br>**FIDLE 2021 - DCGAN**'))
         print('Version              :', cls.version)
         print('TensorFlow version   :', tf.__version__)
         print('Keras version        :', tf.keras.__version__)

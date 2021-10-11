@@ -52,7 +52,7 @@ class VAE(keras.Model):
         
     def call(self, inputs):
         '''
-        When we use our model
+        Model forward pass, when we use our model
         args:
             inputs : Model inputs
         return:
