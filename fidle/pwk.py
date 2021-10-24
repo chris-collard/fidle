@@ -34,6 +34,8 @@ from IPython.display import display,Image,Markdown,HTML
 import fidle.config as config
 
 
+__version__   = config.VERSION
+
 datasets_dir  = None
 notebook_id   = None
 running_mode  = None
@@ -82,17 +84,16 @@ def init(name=None, run_directory='./run'):
     #
     attrs   = override('run_dir', return_attributes=True)
     run_dir = attrs.get('run_dir', run_directory)
-
-    # Solution 2, for fun ;-)
-    # run_dir = run_directory
-    # override('run_dir', module_name='__main__')
-    # override('run_dir', module_name=__name__, verbose=False)
-
     mkdir(run_dir)
     
     # ---- Update Keras cache
     #
     updated = update_keras_cache()
+
+    # ---- Tensorflow log level
+    #
+    log_level = int(os.getenv('TF_CPP_MIN_LOG_LEVEL', 0 ))
+    str_level = ['Info + Warning + Error','Warning + Error','Error only'][log_level]
     
     # ---- Today and now
     #
@@ -104,11 +105,16 @@ def init(name=None, run_directory='./run'):
     print('Version              :', config.VERSION)
     print('Notebook id          :', notebook_id)
     print('Run time             :', _start_time.strftime("%A %d %B %Y, %H:%M:%S"))
-    print('TensorFlow version   :', tf.__version__)
-    print('Keras version        :', tf.keras.__version__)
+    print('Tensorflow log level :', str_level,f' (={log_level})')
     print('Datasets dir         :', datasets_dir)
     print('Run dir              :', run_dir)
     print('Update keras cache   :', updated)
+    
+    # ---- Versions catalog
+    #
+    for m in config.USED_MODULES:
+        if m in sys.modules:
+            print(f'{m:21s}:', sys.modules[m].__version__)
 
     # ---- Save figs or not
     #

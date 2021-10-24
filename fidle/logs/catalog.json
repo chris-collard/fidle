@@ -508,6 +508,22 @@
         "description": "Bash script for SLURM batch submission of VAE8 notebooks ",
         "overrides": []
     },
+    "DCGAN01": {
+        "id": "DCGAN01",
+        "dirname": "DCGAN",
+        "basename": "01-DCGAN-Draw-me-a-sheep.ipynb",
+        "title": "A first DCGAN to Draw a Sheep",
+        "description": "Episode 1 : Draw me a sheep, revisited with a DCGAN",
+        "overrides": [
+            "run_dir",
+            "latent_dim",
+            "epochs",
+            "batch_size",
+            "num_img",
+            "scale",
+            "run_dir"
+        ]
+    },
     "ACTF1": {
         "id": "ACTF1",
         "dirname": "Misc",
@@ -530,14 +546,6 @@
         "basename": "Scratchbook.ipynb",
         "title": "Scratchbook",
         "description": "A scratchbook for small examples",
-        "overrides": []
-    },
-    "??": {
-        "id": "??",
-        "dirname": "Misc",
-        "basename": "Test.ipynb",
-        "title": "??",
-        "description": "??",
         "overrides": []
     },
     "TSB1": {

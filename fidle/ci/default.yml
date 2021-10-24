@@ -386,6 +386,18 @@ Nb_VAE10:
   notebook_dir: VAE
   notebook_src: batch_slurm.sh
   notebook_tag: default
+Nb_DCGAN01:
+  notebook_id: DCGAN01
+  notebook_dir: DCGAN
+  notebook_src: 01-DCGAN-Draw-me-a-sheep.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    latent_dim: default
+    epochs: default
+    batch_size: default
+    num_img: default
+    scale: default
 Nb_ACTF1:
   notebook_id: ACTF1
   notebook_dir: Misc

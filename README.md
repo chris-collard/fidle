@@ -28,7 +28,7 @@ Voir le [programme](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/w
 Voir ou revoir les [vidéos](https://www.youtube.com/channel/UC4Sukzudhbwr6fs10cXrJsQ)
 
 Current Version : <!-- VERSION_BEGIN -->
-**2.0.23**
+**2.0.24**
 <!-- VERSION_END -->
 
 
@@ -145,6 +145,10 @@ Episode 5 : Exploring latent space to generate new data
 - **[VAE10](VAE/batch_slurm.sh)** - [SLURM batch script](VAE/batch_slurm.sh)  
 Bash script for SLURM batch submission of VAE8 notebooks 
 
+### Generative Adversarial Networks (GANs)
+- **[DCGAN01](DCGAN/01-DCGAN-Draw-me-a-sheep.ipynb)** - [A first DCGAN to Draw a Sheep](DCGAN/01-DCGAN-Draw-me-a-sheep.ipynb)  
+Episode 1 : Draw me a sheep, revisited with a DCGAN
+
 ### Miscellaneous
 - **[ACTF1](Misc/Activation-Functions.ipynb)** - [Activation functions](Misc/Activation-Functions.ipynb)  
 Some activation functions, with their derivatives.
@@ -152,8 +156,6 @@ Some activation functions, with their derivatives.
 Numpy is an essential tool for the Scientific Python.
 - **[SCRATCH1](Misc/Scratchbook.ipynb)** - [Scratchbook](Misc/Scratchbook.ipynb)  
 A scratchbook for small examples
-- **[??](Misc/Test.ipynb)** - [??](Misc/Test.ipynb)  
-??
 - **[TSB1](Misc/Using-Tensorboard.ipynb)** - [Tensorboard with/from Jupyter ](Misc/Using-Tensorboard.ipynb)  
 4 ways to use Tensorboard from the Jupyter environment
 <!-- INDEX_END -->

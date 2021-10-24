@@ -14,7 +14,7 @@
 
 # ---- Version -----------------------------------------------------
 #
-VERSION = '2.0.24'
+VERSION = '2.0.25'
 
 # ---- Default notebook name ---------------------------------------
 #
@@ -40,4 +40,10 @@ CI_REPORT_JSON = '../fidle/logs/ci_report.json'
 CI_REPORT_HTML = '../fidle/logs/ci_report.html'
 CI_ERROR_FILE  = '../fidle/logs/ci_ERROR.txt'
 
-# ------------------------------------------------------------------
+# ---- Used modules -------------------------------------------------
+#
+USED_MODULES   = ['tensorflow','tensorflow.keras','sklearn','skimage',
+                  'matplotlib','plotly','pandas','jupyterlab',
+                  'pytorch', 'torchvision']
+
+# -------------------------------------------------------------------

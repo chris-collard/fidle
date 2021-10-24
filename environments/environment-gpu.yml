@@ -1,0 +1,13 @@
+name: fidle-gpu
+channels:
+  - default
+dependencies:
+  - tensorflow-gpu
+  - keras
+  - scikit-learn
+  - scikit-image
+  - matplotlib
+  - plotly
+  - pandas
+  - pandoc
+  - jupyterlab
