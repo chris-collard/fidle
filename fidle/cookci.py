@@ -16,10 +16,12 @@ import sys,os
 import json
 import datetime, time
 import nbformat
+from nbconvert               import HTMLExporter, PDFExporter
 from nbconvert.preprocessors import ExecutePreprocessor, CellExecutionError
 from asyncio import CancelledError
 import re
 import yaml
+import base64
 from collections import OrderedDict
 from IPython.display import display,Image,Markdown,HTML
 import pandas as pd
@@ -102,9 +104,9 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
     Récupère la liste des notebooks et des paramètres associés,
     décrit dans le profile, et pour chaque notebook :
     Positionner les variables d'environnement pour l'override
-    Charger le notebook
-    Exécuter celui-ci
-    Sauvegarder le notebook résultat, avec son nom taggé.
+    Charge le notebook
+    Exécute celui-ci
+    Sauvegarde le notebook résultat, avec son nom taggé.
     Params:
         profile_name : nom du profile d'éxécution
         report_name : Nom du rapport json généré
@@ -130,13 +132,15 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
     metadata['profile'] = profile_name
     init_ci_report(report_name, error_name, metadata)
     
-    # ---- My place
+    # ---- Where I am, me and the output_dir
     #
-    home = os.getcwd()
+    home        = os.getcwd()
+    output_dir  = config['output_dir']
         
-    # ---- Save figs or not ?
+    # ---- Save figs / Warnings 
     #
-    os.environ['FIDLE_SAVE_FIGS']=str(config['save_figs'])
+    os.environ['FIDLE_SAVE_FIGS']      = str(config['FIDLE_SAVE_FIGS'])
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(config['TF_CPP_MIN_LOG_LEVEL'])
 
     # ---- For each notebook
     #
@@ -146,19 +150,25 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
 
         # ---- Get notebook infos ---------------------------------------------
         #
-        notebook_id  = about['notebook_id']
-        notebook_dir = about['notebook_dir']
-        notebook_src = about['notebook_src']
-        notebook_tag = about['notebook_tag']
-        overrides    = about.get('overrides',None)
+        notebook_id   = about['notebook_id']
+        notebook_dir  = about['notebook_dir']
+        notebook_src  = about['notebook_src']
+        notebook_name = os.path.splitext(notebook_src)[0]
+        notebook_tag  = about['notebook_tag']
+        overrides     = about.get('overrides',None)
+        
 
-        # ---- notebook_out
+        # ---- Output name ----------------------------------------------------
         #
         if notebook_tag=='default':
-            notebook_out = notebook_src.replace('.ipynb', config['output_tag']+'.ipynb')
+            output_name  = notebook_name + config['output_tag']
         else:
-            notebook_out = notebook_src.replace('.ipynb', notebook_tag+'.ipynb')
-                
+            output_name  = notebook_name + notebook_tag
+ 
+        # ---- Go to the right place ------------------------------------------
+        #
+        os.chdir(f'{top_dir}/{notebook_dir}')
+
         # ---- Override ------------------------------------------------------- 
         
         to_unset=[]
@@ -177,16 +187,19 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
                 print(f'       {env_name:38s} = {env_value}')
     
         # ---- Run it ! -------------------------------------------------------
-    
-        # ---- Go to the right place
+
+        # ---- Go to the notebook_dir
         #
         os.chdir(f'{top_dir}/{notebook_dir}')
+
+        # ---- Read notebook
+        #
         notebook = nbformat.read( f'{notebook_src}', nbformat.NO_CONVERT)
 
-        # ---- Top chrono
+        # ---- Top chrono - Start
         #
         chrono_start('nb')
-        update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, notebook_out, start=True)
+        update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, output_name, start=True)
         
         # ---- Try to run...
         #
@@ -196,30 +209,72 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
             ep.preprocess(notebook)
         except CellExecutionError as e:
             happy_end = False
-            notebook_out = notebook_src.replace('.ipynb', '==ERROR==.ipynb')
+            output_name = notebook_name + '==ERROR=='
             print('\n   ','*'*60)
             print( '    ** AAARG.. An error occured : ',type(e).__name__)
-            print(f'    ** See notebook :  {notebook_out} for details.')
+            print(f'    ** See notebook :  {output_name} for details.')
             print('   ','*'*60)
         else:
             happy_end = True
             print('..done.')
 
-        # ---- Top chrono
+        # ---- Top chrono - Stop
         #
         chrono_stop('nb')        
-        update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, notebook_out, end=True, happy_end=happy_end)
+        update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, output_name, end=True, happy_end=happy_end)
         print('    Duration : ',chrono_get_delay('nb') )
-    
-        # ---- Save notebook
-        #
-        with open( f'{notebook_out}', mode="w", encoding='utf-8') as fp:
-            nbformat.write(notebook, fp)
-        print('    Saved as : ',notebook_out)
-    
-        # ---- Back to home and clean
+
+        # ---- Back to home
         #
         os.chdir(home)
+
+        # ---- Convert and save ! ---------------------------------------------
+
+        # ---- Check for images to embed
+        #      We just try to embed <img src="..."> tag in some markdown cells
+        #      Very fast and suffisant for header/ender.
+        #
+        for cell in notebook.cells:
+            if cell['cell_type'] == 'markdown':
+                cell.source = images_embedder(cell.source)
+
+        # ---- Convert to HTML
+        #
+        exporter = HTMLExporter()
+        exporter.template_name = 'classic'
+        (body_html, resources_html) = exporter.from_notebook_node(notebook)
+
+        # Check for images to ember in html
+        # Hard job - better to do it in markdown
+        # body_html = images_embedder(body_html)
+
+        # ---- Convert to pdf
+        #
+        exporter=PDFExporter()
+        (body_pdf, resources_pdf) = exporter.from_notebook_node(notebook)
+
+        # ---- Save notebook as ipynb
+        #
+        os.makedirs(f'{output_dir}/ipynb/{notebook_dir}', mode=0o750, exist_ok=True)
+        with open(  f'{output_dir}/ipynb/{notebook_dir}/{output_name}.ipynb', mode="w", encoding='utf-8') as fp:
+            nbformat.write(notebook, fp)
+
+        # ---- Save notebook as html
+        #
+        os.makedirs(f'{output_dir}/html/{notebook_dir}', mode=0o750, exist_ok=True)
+        with open(  f'{output_dir}/html/{notebook_dir}/{output_name}.html', mode='w') as f:
+            f.write(body_html)
+
+        # ---- Save notebook as html
+        #
+        os.makedirs(f'{output_dir}/pdf/{notebook_dir}', mode=0o750, exist_ok=True)
+        with open(  f'{output_dir}/pdf/{notebook_dir}/{output_name}.pdf', mode='w') as f:
+            f.write(body_pdf)
+
+        print('    Saved {output_name} as ipynb, html and pdf')
+
+        # ---- Clean all ------------------------------------------------------
+        #
         for env_name in to_unset:
             del os.environ[env_name]
 
@@ -230,6 +285,41 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
     complete_ci_report()
     
     
+
+def get_base64_image(filename):
+    '''
+    Read an image file and return as a base64 encoded version
+    params:
+        filename : image filemane
+    return:
+        base 64 encoded image
+    '''
+    with open(filename, "rb") as image_file:
+        img64 = base64.b64encode(image_file.read())
+    src="data:image/svg+xml;base64,"+img64.decode("utf-8") 
+    return src
+
+    
+def images_embedder(html):
+    '''
+    Images embedder. Search images src="..." link and replace them
+    by base64 embedded images.
+    params:
+        html: input html
+    return:
+        output html
+    '''
+    for img_tag in re.findall('.*(<img .*>).*', html):
+        for src_tag in re.findall('.*src=[\'\"](.*)[\'\"].*', img_tag):
+            if src_tag.startswith('data:'): continue
+            src_b64 = get_base64_image(src_tag)
+            img_b64 = img_tag.replace(src_tag, src_b64)
+            html = html.replace(img_tag,img_b64)
+    return html
+
+
+
+
 def chrono_start(id='default'):
     global start_time
     start_time[id] = datetime.datetime.now()

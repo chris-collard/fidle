@@ -1,7 +1,9 @@
 _metadata_:
   version: '1.0'
   output_tag: ==ci==
-  save_figs: true
+  output_dir: ./run/ci
+  FIDLE_SAVE_FIGS: true
+  TF_CPP_MIN_LOG_LEVEL: 2
   description: Full run on a small cpu
 #
 # ------ LinearReg -------------------------------------------------
