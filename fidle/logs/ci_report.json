@@ -8,18 +8,78 @@
         "description": "Full run on a small cpu",
         "host": "Oban",
         "profile": "./ci/small_cpu.yml",
-        "start": "25/10/21 18:22:46",
-        "end": "Unfinished...",
-        "duration": "Unfinished..."
+        "start": "25/10/21 22:20:38",
+        "end": "25/10/21 22:22:42",
+        "duration": "0:02:03"
     },
     "Nb_LINR1": {
         "id": "LINR1",
         "dir": "LinearReg",
         "src": "01-Linear-Regression.ipynb",
         "out": "01-Linear-Regression==ci==",
-        "start": "25/10/21 18:22:46",
-        "end": "25/10/21 18:22:52",
+        "start": "25/10/21 22:20:38",
+        "end": "25/10/21 22:20:44",
+        "duration": "0:00:05",
+        "state": "ok"
+    },
+    "Nb_GRAD1": {
+        "id": "GRAD1",
+        "dir": "LinearReg",
+        "src": "02-Gradient-descent.ipynb",
+        "out": "02-Gradient-descent==ci==",
+        "start": "25/10/21 22:20:48",
+        "end": "25/10/21 22:20:57",
+        "duration": "0:00:09",
+        "state": "ok"
+    },
+    "Nb_POLR1": {
+        "id": "POLR1",
+        "dir": "LinearReg",
+        "src": "03-Polynomial-Regression.ipynb",
+        "out": "03-Polynomial-Regression==ci==",
+        "start": "25/10/21 22:20:59",
+        "end": "25/10/21 22:21:06",
         "duration": "0:00:06",
+        "state": "ok"
+    },
+    "Nb_LOGR1": {
+        "id": "LOGR1",
+        "dir": "LinearReg",
+        "src": "04-Logistic-Regression.ipynb",
+        "out": "04-Logistic-Regression==ci==",
+        "start": "25/10/21 22:21:08",
+        "end": "25/10/21 22:21:14",
+        "duration": "0:00:06",
+        "state": "ok"
+    },
+    "Nb_PER57": {
+        "id": "PER57",
+        "dir": "IRIS",
+        "src": "01-Simple-Perceptron.ipynb",
+        "out": "01-Simple-Perceptron==ci==",
+        "start": "25/10/21 22:21:16",
+        "end": "25/10/21 22:21:22",
+        "duration": "0:00:05",
+        "state": "ok"
+    },
+    "Nb_BHPD1": {
+        "id": "BHPD1",
+        "dir": "BHPD",
+        "src": "01-DNN-Regression.ipynb",
+        "out": "01-DNN-Regression==ci==",
+        "start": "25/10/21 22:21:25",
+        "end": "25/10/21 22:21:52",
+        "duration": "0:00:26",
+        "state": "ok"
+    },
+    "Nb_BHPD2": {
+        "id": "BHPD2",
+        "dir": "BHPD",
+        "src": "02-DNN-Regression-Premium.ipynb",
+        "out": "02-DNN-Regression-Premium==ci==",
+        "start": "25/10/21 22:21:56",
+        "end": "25/10/21 22:22:38",
+        "duration": "0:00:42",
         "state": "ok"
     }
 }

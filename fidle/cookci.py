@@ -244,14 +244,18 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
         exporter.template_name = 'classic'
         (body_html, resources_html) = exporter.from_notebook_node(notebook)
 
-        # Check for images to ember in html
+        # Check for images to embed in html
         # Hard job - better to do it in markdown
         # body_html = images_embedder(body_html)
 
         # ---- Convert to pdf
         #
-        exporter=PDFExporter()
-        (body_pdf, resources_pdf) = exporter.from_notebook_node(notebook)
+        try:
+            exporter=PDFExporter()
+            (body_pdf, resources_pdf) = exporter.from_notebook_node(notebook)
+        except:
+            print("    **Error during pdf convert...")
+            body_pdf=b''
 
         # ---- Save notebook as ipynb
         #
@@ -268,10 +272,10 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
         # ---- Save notebook as html
         #
         os.makedirs(f'{output_dir}/pdf/{notebook_dir}', mode=0o750, exist_ok=True)
-        with open(  f'{output_dir}/pdf/{notebook_dir}/{output_name}.pdf', mode='w') as f:
+        with open(  f'{output_dir}/pdf/{notebook_dir}/{output_name}.pdf', mode='wb') as f:
             f.write(body_pdf)
 
-        print('    Saved {output_name} as ipynb, html and pdf')
+        print(f'    Saved {output_name} as ipynb, html and pdf')
 
         # ---- Clean all ------------------------------------------------------
         #
