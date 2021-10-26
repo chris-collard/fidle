@@ -1,8 +1,12 @@
 _metadata_:
   version: '1.0'
-  output_tag: ==done==
+  output_tag: ==ci==
   save_figs: true
   description: Default generated profile
+  output_ipynb: <directory for ipynb>
+  output_html: <directory for html>
+  report_json: <report json file>
+  report_error: <error file>
 Nb_LINR1:
   notebook_id: LINR1
   notebook_dir: LinearReg

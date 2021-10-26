@@ -1,10 +1,14 @@
 _metadata_:
   version: '1.0'
-  output_tag: ==ci==
-  output_dir: ./run/ci
-  FIDLE_SAVE_FIGS: true
-  TF_CPP_MIN_LOG_LEVEL: 2
   description: Full run on a small cpu
+  output_tag: ==ci==
+  output_ipynb: ./fidle/run/ci/ipynb
+  output_html:  ./fidle/run/ci/html
+  report_json:  ./fidle/run/ci/report.json
+  report_error: ./fidle/run/ci/error.txt
+  environment_vars:
+    FIDLE_SAVE_FIGS: true
+    TF_CPP_MIN_LOG_LEVEL: 2
 #
 # ------ LinearReg -------------------------------------------------
 #

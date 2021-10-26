@@ -16,7 +16,7 @@ import sys,os
 import json
 import datetime, time
 import nbformat
-from nbconvert               import HTMLExporter, PDFExporter
+from nbconvert               import HTMLExporter
 from nbconvert.preprocessors import ExecutePreprocessor, CellExecutionError
 from asyncio import CancelledError
 import re
@@ -30,16 +30,16 @@ sys.path.append('..')
 import fidle.config as config
 import fidle.cookindex as cookindex
 
-VERSION = '1.0'
+VERSION = '1.2'
 
 start_time = {}
 end_time   = {}
 
-_report_filename = None
-_error_filename  = None
+_report_json  = None
+_report_error = None
 
 
-def get_default_profile(catalog=None, output_tag='==done==', save_figs=True):
+def get_default_profile(catalog=None, output_tag='==ci==', save_figs=True):
     '''
     Return a default profile for continous integration.
     Ce profile contient une liste des notebooks avec les paramètres modifiables.
@@ -56,10 +56,15 @@ def get_default_profile(catalog=None, output_tag='==done==', save_figs=True):
     if catalog is None:
         catalog = cookindex.read_catalog()
 
-    metadata   = { 'version'     : '1.0', 
-                   'output_tag'  : output_tag, 
-                   'save_figs'   : save_figs, 
-                   'description' : 'Default generated profile'}
+    metadata   = { 'version'       : '1.0', 
+                   'output_tag'    : output_tag, 
+                   'save_figs'     : save_figs, 
+                   'description'   : 'Default generated profile',
+                   'output_ipynb'  : '<directory for ipynb>',
+                   'output_html'   : '<directory for html>',
+                   'report_json'   : '<report json file>',
+                   'report_error'  : '<error file>'
+                   }
     profile  = { '_metadata_':metadata }
     for id, about in catalog.items():
         
@@ -99,7 +104,7 @@ def load_profile(filename):
         return profile
     
     
-def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
+def run_profile(profile_name, top_dir='..'):
     '''
     Récupère la liste des notebooks et des paramètres associés,
     décrit dans le profile, et pour chaque notebook :
@@ -109,12 +114,11 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
     Sauvegarde le notebook résultat, avec son nom taggé.
     Params:
         profile_name : nom du profile d'éxécution
-        report_name : Nom du rapport json généré
         top_dir : chemin relatif vers la racine fidle (..)
     '''
     
-    print('\nRun profile session - FIDLE 2021')
-    print(f'Version : {VERSION}')
+    print('\n== Run profile session - FIDLE 2021')
+    print(f'== Version : {VERSION}')
     
     chrono_start('main')
     
@@ -130,17 +134,23 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
     metadata = config
     metadata['host']    = os.uname()[1]
     metadata['profile'] = profile_name
-    init_ci_report(report_name, error_name, metadata)
+
+    report_json  = top_dir + '/' + config['report_json' ]
+    report_error = top_dir + '/' + config['report_error']
+    init_ci_report(report_json, report_error, metadata)
     
     # ---- Where I am, me and the output_dir
     #
-    home        = os.getcwd()
-    output_dir  = config['output_dir']
+    home         = os.getcwd()
+    output_ipynb = config['output_ipynb']
+    output_html  = config['output_html']
         
-    # ---- Save figs / Warnings 
+    # ---- Environment vars
     #
-    os.environ['FIDLE_SAVE_FIGS']      = str(config['FIDLE_SAVE_FIGS'])
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(config['TF_CPP_MIN_LOG_LEVEL'])
+    environment_vars = config['environment_vars']
+    for name,value in environment_vars.items():
+        os.environ[name] = str(value)
+        print(f'Set : {name:20s} = {value}')
 
     # ---- For each notebook
     #
@@ -228,9 +238,7 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
         #
         os.chdir(home)
 
-        # ---- Convert and save ! ---------------------------------------------
-
-        # ---- Check for images to embed
+        # ---- Check for images to embed --------------------------------------
         #      We just try to embed <img src="..."> tag in some markdown cells
         #      Very fast and suffisant for header/ender.
         #
@@ -238,44 +246,33 @@ def run_profile(profile_name, report_name=None, error_name=None, top_dir='..'):
             if cell['cell_type'] == 'markdown':
                 cell.source = images_embedder(cell.source)
 
-        # ---- Convert to HTML
+        # ---- Save notebook as ipynb -----------------------------------------
         #
-        exporter = HTMLExporter()
-        exporter.template_name = 'classic'
-        (body_html, resources_html) = exporter.from_notebook_node(notebook)
+        if output_ipynb.lower()!="none":
+            save_dir = os.path.abspath( f'{top_dir}/{output_ipynb}/{notebook_dir}' )
+            os.makedirs(save_dir, mode=0o750, exist_ok=True)
+            with open(  f'{save_dir}/{output_name}.ipynb', mode="w", encoding='utf-8') as fp:
+                nbformat.write(notebook, fp)
+            print(f'    Saved {save_dir}/{output_name}.ipynb')
 
-        # Check for images to embed in html
-        # Hard job - better to do it in markdown
-        # body_html = images_embedder(body_html)
-
-        # ---- Convert to pdf
+        # ---- Save notebook as html ------------------------------------------
         #
-        try:
-            exporter=PDFExporter()
-            (body_pdf, resources_pdf) = exporter.from_notebook_node(notebook)
-        except:
-            print("    **Error during pdf convert...")
-            body_pdf=b''
+        if output_html.lower()!="none":
 
-        # ---- Save notebook as ipynb
-        #
-        os.makedirs(f'{output_dir}/ipynb/{notebook_dir}', mode=0o750, exist_ok=True)
-        with open(  f'{output_dir}/ipynb/{notebook_dir}/{output_name}.ipynb', mode="w", encoding='utf-8') as fp:
-            nbformat.write(notebook, fp)
-
-        # ---- Save notebook as html
-        #
-        os.makedirs(f'{output_dir}/html/{notebook_dir}', mode=0o750, exist_ok=True)
-        with open(  f'{output_dir}/html/{notebook_dir}/{output_name}.html', mode='w') as f:
-            f.write(body_html)
-
-        # ---- Save notebook as html
-        #
-        os.makedirs(f'{output_dir}/pdf/{notebook_dir}', mode=0o750, exist_ok=True)
-        with open(  f'{output_dir}/pdf/{notebook_dir}/{output_name}.pdf', mode='wb') as f:
-            f.write(body_pdf)
-
-        print(f'    Saved {output_name} as ipynb, html and pdf')
+            # ---- Convert notebook to html
+            exporter = HTMLExporter()
+            exporter.template_name = 'classic'
+            (body_html, resources_html) = exporter.from_notebook_node(notebook)
+            
+            # ---- Embed images
+            # body_html = images_embedder(body_html)
+            
+            # ---- Save
+            save_dir = os.path.abspath( f'{top_dir}/{output_html}/{notebook_dir}' )
+            os.makedirs(save_dir, mode=0o750, exist_ok=True)
+            with open(  f'{save_dir}/{output_name}.html', mode='w') as fp:
+                fp.write(body_html)
+            print(f'    Saved {save_dir}/{output_name}.html')
 
         # ---- Clean all ------------------------------------------------------
         #
@@ -354,59 +351,50 @@ def reset_chrono():
     start_time, end_time = {},{}
     
 
-def init_ci_report(report_filename, error_filename, metadata, verbose=True):
+def init_ci_report(report_json, report_error, metadata, verbose=True):
     
-    global _report_filename, _error_filename
+    global _report_json, _report_error
     
-    # ---- Report filename
-    #
-    if report_filename is None:
-        report_filename = config.CI_REPORT_JSON
-    _report_filename = os.path.abspath(report_filename)
+    _report_json  = os.path.abspath(report_json)
+    _report_error = os.path.abspath(report_error)
     
-    # ---- Error_filename
-    #
-    if error_filename is None:
-        error_filename = config.CI_ERROR_FILE
-    _error_filename = os.path.abspath(error_filename)
-    
-    # ---- Create report
+    # ---- Create json report
     #
     metadata['start']=chrono_get_start('main')
     data={ '_metadata_':metadata }
-    with open(_report_filename,'wt') as fp:
+    with open(_report_json,'wt') as fp:
         json.dump(data,fp,indent=4)
-    if verbose : print(f'\nCreate new ci report : {_report_filename}')
+    if verbose : print(f'\nCreate new ci report : {_report_json}')
     
     # ---- Reset error
     #
-    if os.path.exists(_error_filename):
-        os.remove(_error_filename)
-    if verbose : print(f'Remove error file    : {_error_filename}')
+    if os.path.exists(_report_error):
+        os.remove(_report_error)
+    if verbose : print(f'Remove error file    : {_report_error}')
 
     
 def complete_ci_report(verbose=True):
 
-    global _report_filename, _error_filename
+    global _report_json
 
-    with open(_report_filename) as fp:
+    with open(_report_json) as fp:
         report = json.load(fp)
         
     report['_metadata_']['end']      = chrono_get_end('main')
     report['_metadata_']['duration'] = chrono_get_delay('main')
     
-    with open(_report_filename,'wt') as fp:
+    with open(_report_json,'wt') as fp:
         json.dump(report,fp,indent=4)
         
-    if verbose : print(f'\nComplete ci report : {_report_filename}')
+    if verbose : print(f'\nComplete ci report : {_report_json}')
     
     
 def update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, notebook_out, start=False, end=False, happy_end=True):
     global start_time, end_time
-    global _report_filename, _error_filename
+    global _report_json, _report_error
     
     # ---- Load it
-    with open(_report_filename) as fp:
+    with open(_report_json) as fp:
         report = json.load(fp)
         
     # ---- Update as a start
@@ -432,86 +420,100 @@ def update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, notebook_o
         report[run_id]['out']       = notebook_out     # changeg in case of error
 
     # ---- Save report
-    with open(_report_filename,'wt') as fp:
+    with open(_report_json,'wt') as fp:
         json.dump(report,fp,indent=4)
 
     if not happy_end:
-        with open(_error_filename, 'a') as fp:
+        with open(_report_error, 'a') as fp:
             print(f"See : {notebook_dir}/{notebook_out} ", file=fp)
         
         
 
 
-def build_ci_report(report_name=None, display_output=True, save_html=True):
+def build_ci_report(profile_name, top_dir='..'):
     
-    # ---- Load ci report
+    print('\n== Build CI Report - FIDLE 2021')
+    print(f'== Version : {VERSION}')
+
+
+    profile   = load_profile(profile_name)
+    config    = profile['_metadata_']
+
+    report_json  = top_dir + '/' + config['report_json' ]
+    report_error = top_dir + '/' + config['report_error']
+
+    report_json  = os.path.abspath(report_json)
+    report_error = os.path.abspath(report_error)
+
+
+    # ---- Load report
     #
-    if report_name is None:
-        report_name = config.CI_REPORT_JSON
-        
-    with open(report_name) as infile:
-        ci_report = json.load( infile )
+    with open(report_json) as infile:
+        report = json.load( infile )
 
     # ---- metadata
     #
-    metadata=ci_report['_metadata_']
-    del ci_report['_metadata_']
+    metadata=report['_metadata_']
+    del report['_metadata_']
+
+    output_html = metadata['output_html']
+
+    if output_html.lower()=='none':
+        print('No HTML output is specified in profile...')
+        return
     
-    metadata_md=''
-    metadata_html=''
+    reportfile = os.path.abspath( f'{top_dir}/{output_html}/index.html' )
+
+    # ---- HTML for metadata
+    #
+    html_metadata = ''
     for name,value in metadata.items():
-        metadata_md   += f'**{name.title()}** : {value}  \n'
-        metadata_html += f'<b>{name.title()}</b> : {value}  <br>\n'
-    
-    # ---- Create a nice DataFrame
+        html_metadata += f'<b>{name.title()}</b> : {value}  <br>\n'
+
+    # ---- HTML for report    
     #
-    df=pd.DataFrame(ci_report)
-    df=df.transpose()
-    df = df.rename_axis('Run').reset_index()
+    html_report = '<table>'
+    html_report += '<tr><th>Directory</th><th>Id</th><th>Notebook</th><th>Start</th><th>Duration</th><th>State</th></tr>\n'
+    for id,entry in report.items():
+        dir   = entry['dir']
+        src   = entry['src']
+        out   = entry['out']+'.html'
+        start = entry['start']
+        end   = entry['end']
+        dur   = entry['duration']
+        state = entry['state']
 
-    # ---- Few styles to be nice
-    #
-    styles = [
-        dict(selector="td", props=[("font-size", "110%"), ("text-align", "left")]),
-        dict(selector="th", props=[("font-size", "110%"), ("text-align", "left")])
-    ]
-    def still_pending(v):
-        return 'background-color: OrangeRed; color:white' if v == 'ERROR' else ''
+        cols = []
+        cols.append( f'<a href="{dir}">{dir}</a>'       )
+        cols.append( f'<a href="{dir}/{out}">{id}</a>'  )
+        cols.append( f'<a href="{dir}/{out}">{src}</a>' )
+        cols.append( start )
+        cols.append( dur   )
+        cols.append( state )
 
-    # ---- Links version : display
-    #
-    if display_output:
-        
-        ddf=df.copy()
-        ddf['id']  = ddf.apply(lambda r: f"<a href='../{r['dir']}/{r['src']}'>{r['id']}</a>", axis=1)
-        ddf['src'] = ddf.apply(lambda r: f"<a href='../{r['dir']}/{r['src']}'>{r['src']}</a>", axis=1)
-        ddf['out'] = ddf.apply(lambda r: f"<a href='../{r['dir']}/{r['out']}'>{r['out']}</a>", axis=1)
-        ddf.columns = [x.title() for x in ddf.columns]
+        html_report+='<tr>'
+        for c in cols:
+            html_report+=f'<td>{c}</td>'
+        html_report+='</tr>\n'
 
-        output = ddf[ddf.columns.values].style.set_table_styles(styles).hide_index().applymap(still_pending)
-        display(Markdown('### About :'))
-        display(Markdown(metadata_md))
-        display(Markdown('### Details :'))
-        display(output)
+    html_report+='</table>'
 
-    # ---- Basic version : html report 
-    #
-    if save_html:
-        
-        df.columns = [x.title() for x in df.columns]
-        output = df[df.columns.values].style.set_table_styles(styles).hide_index().applymap(still_pending)
-
-        html = _get_html_report(metadata_html, output)
-        with open(config.CI_REPORT_HTML, "wt") as fp:
-            fp.write(html)
-        display(Markdown('<br>HTML report saved as : [./logs/ci_report.html](./logs/ci_report.html)'))
+    body_html = _get_html_report(html_metadata, html_report)
+    with open(reportfile, "wt") as fp:
+        fp.write(body_html)
+    print(f'HTML report saved as : {reportfile}')
             
 
+    
 
 
-def _get_html_report(metadata_html, output):
+def _get_html_report(html_metadata, html_report):
+
+    with open('./img/00-Fidle-header-01.svg','r') as fp:
+        logo_header = fp.read()
+
     with open('./img/00-Fidle-logo-01-80px.svg','r') as fp:
-        logo = fp.read()
+        logo_ender = fp.read()
 
     html = f"""\
     <html>
@@ -522,9 +524,9 @@ def _get_html_report(metadata_html, output):
                   font-family: sans-serif;
             }}
             div.title{{ 
-                font-size: 1.2em;
+                font-size: 1.4em;
                 font-weight: bold;
-                padding: 15px 0px 10px 0px; }}
+                padding: 40px 0px 10px 0px; }}
             a{{
                 color: SteelBlue;
                 text-decoration:none;
@@ -537,19 +539,26 @@ def _get_html_report(metadata_html, output):
                   border-style: solid;
                   border-width:  thin;
                   border-color:  lightgrey;
-                  padding: 5px;
+                  padding: 5px 20px 5px 20px;
             }}
             .metadata{{ padding: 10px 0px 10px 30px; font-size: 0.9em; }}
             .result{{ padding: 10px 0px 10px 30px; }}
         </style>
-            <br>Hi,
-            <p>Below is the result of the continuous integration tests of the Fidle project:</p>
-            <div class='title'>About :</div>
-            <div class="metadata">{metadata_html}</div>
-            <div class='title'>Details :</div>
-            <div class="result">{output.render()}</div>
 
-            {logo}
+            {logo_header}
+
+            <div class='title'>Notebook performed :</div>
+            <div class="result">
+                <p>Here is a "correction" of all the notebooks.</p>
+                <p>These notebooks have been run on Jean-Zay, on GPU (V100) and the results are proposed here in HTML format.</p>    
+                {html_report}
+            </div>
+            <div class='title'>Metadata :</div>
+            <div class="metadata">
+                {html_metadata}
+            </div>
+
+            {logo_ender}
 
             </body>
     </html>
