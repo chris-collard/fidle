@@ -37,21 +37,29 @@ Nb_BHPD1:
   notebook_dir: BHPD
   notebook_src: 01-DNN-Regression.ipynb
   notebook_tag: default
+  overrides:
+    fit_verbosity: default
 Nb_BHPD2:
   notebook_id: BHPD2
   notebook_dir: BHPD
   notebook_src: 02-DNN-Regression-Premium.ipynb
   notebook_tag: default
+  overrides:
+    fit_verbosity: default
 Nb_MNIST1:
   notebook_id: MNIST1
   notebook_dir: MNIST
   notebook_src: 01-DNN-MNIST.ipynb
   notebook_tag: default
+  overrides:
+    fit_verbosity: default
 Nb_MNIST2:
   notebook_id: MNIST2
   notebook_dir: MNIST
   notebook_src: 02-CNN-MNIST.ipynb
   notebook_tag: default
+  overrides:
+    fit_verbosity: default
 Nb_GTSRB1:
   notebook_id: GTSRB1
   notebook_dir: GTSRB
@@ -60,6 +68,7 @@ Nb_GTSRB1:
   overrides:
     scale: default
     output_dir: default
+    progress_verbosity: default
 Nb_GTSRB2:
   notebook_id: GTSRB2
   notebook_dir: GTSRB
@@ -72,6 +81,7 @@ Nb_GTSRB2:
     batch_size: default
     epochs: default
     scale: default
+    fit_verbosity: default
 Nb_GTSRB3:
   notebook_id: GTSRB3
   notebook_dir: GTSRB
@@ -84,6 +94,7 @@ Nb_GTSRB3:
     batch_size: default
     epochs: default
     scale: default
+    fit_verbosity: default
 Nb_GTSRB4:
   notebook_id: GTSRB4
   notebook_dir: GTSRB
@@ -96,6 +107,7 @@ Nb_GTSRB4:
     batch_size: default
     epochs: default
     scale: default
+    fit_verbosity: default
 Nb_GTSRB5:
   notebook_id: GTSRB5
   notebook_dir: GTSRB
@@ -110,7 +122,7 @@ Nb_GTSRB5:
     epochs: default
     scale: default
     with_datagen: default
-    verbose: default
+    fit_verbosity: default
 Nb_GTSRB6:
   notebook_id: GTSRB6
   notebook_dir: GTSRB
@@ -145,6 +157,7 @@ Nb_IMDB1:
     hide_most_frequently: default
     batch_size: default
     epochs: default
+    fit_verbosity: default
 Nb_IMDB2:
   notebook_id: IMDB2
   notebook_dir: IMDB
@@ -159,6 +172,7 @@ Nb_IMDB2:
     batch_size: default
     epochs: default
     output_dir: default
+    fit_verbosity: default
 Nb_IMDB3:
   notebook_id: IMDB3
   notebook_dir: IMDB
@@ -185,13 +199,15 @@ Nb_IMDB5:
   notebook_src: 05-LSTM-Keras.ipynb
   notebook_tag: default
   overrides:
+    run_dir: default
     vocab_size: default
     hide_most_frequently: default
     review_len: default
     dense_vector_size: default
     batch_size: default
     epochs: default
-    output_dir: default
+    fit_verbosity: default
+    scale: default
 Nb_LADYB1:
   notebook_id: LADYB1
   notebook_dir: SYNOP
@@ -225,6 +241,7 @@ Nb_SYNOP2:
     sequence_len: default
     batch_size: default
     epochs: default
+    fit_verbosity: default
 Nb_SYNOP3:
   notebook_id: SYNOP3
   notebook_dir: SYNOP
@@ -236,8 +253,6 @@ Nb_SYNOP3:
     scale: default
     train_prop: default
     sequence_len: default
-    batch_size: default
-    epochs: default
 Nb_AE1:
   notebook_id: AE1
   notebook_dir: AE
@@ -245,6 +260,9 @@ Nb_AE1:
   notebook_tag: default
   overrides:
     run_dir: default
+    prepared_dataset: default
+    scale: default
+    progress_verbosity: default
 Nb_AE2:
   notebook_id: AE2
   notebook_dir: AE
@@ -311,6 +329,7 @@ Nb_VAE1:
     seed: default
     batch_size: default
     epochs: default
+    fit_verbosity: default
 Nb_VAE2:
   notebook_id: VAE2
   notebook_dir: VAE
@@ -324,6 +343,7 @@ Nb_VAE2:
     seed: default
     batch_size: default
     epochs: default
+    fit_verbosity: default
 Nb_VAE3:
   notebook_id: VAE3
   notebook_dir: VAE

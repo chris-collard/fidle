@@ -2,6 +2,7 @@ name: fidle-cpu
 channels:
   - default
 dependencies:
+  - numpy=1.19
   - tensorflow
   - keras
   - scikit-learn

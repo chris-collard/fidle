@@ -33,10 +33,11 @@ class MNIST():
         pass
    
     @classmethod
-    def get_origine(cls, normalize=True, expand=True, concatenate=True):
+    def get_origine(cls, scale=1, normalize=True, expand=True, concatenate=True):
         """
         Return original MNIST dataset
         args:
+            scale       : Proportion of the requested dataset
             normalize   : Normalize dataset or not (True)
             expand      : Reshape images as (28,28,1) instead (28,28) (True)
             concatenate : Concatenate train and test sets (True)
@@ -49,7 +50,7 @@ class MNIST():
         #
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
         print('Dataset loaded.')
-           
+        
         # ---- Normalization
         #
         if normalize:
@@ -63,6 +64,15 @@ class MNIST():
             x_train = np.expand_dims(x_train, axis=-1)
             x_test  = np.expand_dims(x_test,  axis=-1)
             print('Reshaped.')
+
+        # ---- scale
+        #
+        n1 = int(len(x_train)*scale)
+        n2 = int(len(x_test)*scale)
+        x_train = x_train[:n1]
+        y_train = y_train[:n1]
+        x_test  = x_test[:n2]
+        y_test  = y_test[:n2]
 
         # ---- Concatenate
         #

@@ -19,16 +19,17 @@ The objectives of this training are :
  - Understanding **Tensorflow/Keras** and **Jupyter lab** technologies
  - Apprehend the **academic computing environments** Tier-2 or Tier-1 with powerfull GPU
 
-For more information, you can contact [Fidle team](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/Fidle%20team) at : 
-[<img width="200px" style="vertical-align:middle" src="fidle/img/00-Mail_contact.svg"></img>](#top)\
-Don't forget to look at the [Wiki](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/home)
+For more information, see **https://fidle.cnrs.fr** :
+- **[Presentation of the training](https://fidle.cnrs.fr/presentation)**
+- **[Program 2021/2022](https://fidle.cnrs.fr/programme)**
+- [Subscribe to the list](https://fidle.cnrs.fr/listeinfo), to stay informed !
+- [Find us on youtube](https://fidle.cnrs.fr/youtube)
 
-A propos de [Fidle à distance (fevrier-avril 2021)](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/Fidle%20%C3%A0%20distance/En%20bref)\
-Voir le [programme](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/Fidle%20%C3%A0%20distance/Pr%C3%A9sentation#programme-)\
-Voir ou revoir les [vidéos](https://www.youtube.com/channel/UC4Sukzudhbwr6fs10cXrJsQ)
+For more information, you can contact us at : 
+[<img width="200px" style="vertical-align:middle" src="fidle/img/00-Mail_contact.svg"></img>](#top)
 
 Current Version : <!-- VERSION_BEGIN -->
-**2.0.24**
+**2.0.26**
 <!-- VERSION_END -->
 
 
@@ -36,9 +37,9 @@ Current Version : <!-- VERSION_BEGIN -->
 
 | | | |
 |:--:|:--:|:--:|
-| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://cloud.univ-grenoble-alpes.fr/index.php/s/wxCztjYBbQ6zwd6)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/archive/master/fidle-master.zip)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://cloud.univ-grenoble-alpes.fr/index.php/s/wxCztjYBbQ6zwd6)**<br>All the needed datasets<br>(1.2 Go)|
+| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://fidle.cnrs.fr/supports)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://fidle.cnrs.fr/notebooks)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://fidle.cnrs.fr/datasets)**<br>All the needed datasets<br>(1.2 Go)|
 
-Have a look about **[How to get and install](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/Using%20Fidle/install%20fidle)** these notebooks and datasets.
+Have a look about **[How to get and install](https://fidle.cnrs.fr/installation)** these notebooks and datasets.
 
 
 ## Jupyter notebooks
@@ -163,7 +164,7 @@ A scratchbook for small examples
 
 ## Installation
 
-Have a look about **[How to get and install](https://gricad-gitlab.univ-grenoble-alpes.fr/talks/fidle/-/wikis/Using%20Fidle/install%20fidle)** these notebooks and datasets.
+Have a look about **[How to get and install](https://fidle.cnrs.fr/installation)** these notebooks and datasets.
 
 ## Licence
 

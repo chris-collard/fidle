@@ -14,7 +14,7 @@
 
 # ---- Version -----------------------------------------------------
 #
-VERSION = '2.0.25'
+VERSION = '2.0.26'
 
 # ---- Default notebook name ---------------------------------------
 #
@@ -33,6 +33,7 @@ SAVE_FIGS    = False
 # ---- Catalog file, a json description of all notebooks ------------
 #
 CATALOG_FILE    = '../fidle/logs/catalog.json'
+PROFILE_FILE    = '../fidle/ci/default.yml'
 
 # ---- CI report files ----------------------------------------------
 #

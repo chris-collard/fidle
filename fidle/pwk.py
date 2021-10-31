@@ -289,17 +289,20 @@ def pick_dataset(*data,n=5):
     out = [ d[ii] for d in data ]
     return out[0] if len(out)==1 else out
 
-def update_progress(what,i,imax, redraw=False):
+def update_progress(what,i,imax, redraw=False, verbosity=1):
     """
     Display a text progress bar, as :
     My progress bar : ############# 34%
     args:
-        what  : Progress bas name
+        what  : Progress bar name
         i     : Current progress
         imax  : Max value for i
+        verbosity : progress bar verbosity (0: no bar, 1: progress bar, 2: one line)
     return:
         nothing
     """
+    if verbosity==0:   return
+    if verbosity==2 and i<imax: return
     bar_length = min(40,imax)
     if (i%int(imax/bar_length))!=0 and i<imax and not redraw:
         return
@@ -872,9 +875,13 @@ def np_print(*args, precision=3, linewidth=120):
 def end():
     global _end_time
     _end_time = datetime.datetime.now()
-        
-    print('End time is :', time.strftime("%A %d %B %Y, %H:%M:%S"))
-    print('Duration is :', hdelay_ms(_end_time - _start_time))
-    print('This notebook ends here')
+    end_time = time.strftime("%A %d %B %Y, %H:%M:%S")
+    duration = hdelay_ms(_end_time - _start_time)
+    site_url = "https://fidle.cnrs.fr"
+    md = f'**End time :** {end_time}  \n'
+    md+= f'**Duration :** {duration}  \n'
+    md+= f'This notebook ends here :-)  \n'
+    md+= f'[{site_url}]({site_url})'
+    display_md(md)
      
      

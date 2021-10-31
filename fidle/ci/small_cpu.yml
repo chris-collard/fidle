@@ -12,48 +12,48 @@ _metadata_:
 #
 # ------ LinearReg -------------------------------------------------
 #
-Nb_LINR1:
-  notebook_id: LINR1
-  notebook_dir: LinearReg
-  notebook_src: 01-Linear-Regression.ipynb
-  notebook_tag: default
-Nb_GRAD1:
-  notebook_id: GRAD1
-  notebook_dir: LinearReg
-  notebook_src: 02-Gradient-descent.ipynb
-  notebook_tag: default
-Nb_POLR1:
-  notebook_id: POLR1
-  notebook_dir: LinearReg
-  notebook_src: 03-Polynomial-Regression.ipynb
-  notebook_tag: default
-Nb_LOGR1:
-  notebook_id: LOGR1
-  notebook_dir: LinearReg
-  notebook_src: 04-Logistic-Regression.ipynb
-  notebook_tag: default
-Nb_PER57:
-  notebook_id: PER57
-  notebook_dir: IRIS
-  notebook_src: 01-Simple-Perceptron.ipynb
-  notebook_tag: default
+# Nb_LINR1:
+#   notebook_id: LINR1
+#   notebook_dir: LinearReg
+#   notebook_src: 01-Linear-Regression.ipynb
+#   notebook_tag: default
+# Nb_GRAD1:
+#   notebook_id: GRAD1
+#   notebook_dir: LinearReg
+#   notebook_src: 02-Gradient-descent.ipynb
+#   notebook_tag: default
+# Nb_POLR1:
+#   notebook_id: POLR1
+#   notebook_dir: LinearReg
+#   notebook_src: 03-Polynomial-Regression.ipynb
+#   notebook_tag: default
+# Nb_LOGR1:
+#   notebook_id: LOGR1
+#   notebook_dir: LinearReg
+#   notebook_src: 04-Logistic-Regression.ipynb
+#   notebook_tag: default
+# Nb_PER57:
+#   notebook_id: PER57
+#   notebook_dir: IRIS
+#   notebook_src: 01-Simple-Perceptron.ipynb
+#   notebook_tag: default
 #
 # ------ BHPD ------------------------------------------------------
 #
-Nb_BHPD1:
-  notebook_id: BHPD1
-  notebook_dir: BHPD
-  notebook_src: 01-DNN-Regression.ipynb
-  notebook_tag: default
-  overrides:
-    fit_verbosity: 2
-Nb_BHPD2:
-  notebook_id: BHPD2
-  notebook_dir: BHPD
-  notebook_src: 02-DNN-Regression-Premium.ipynb
-  notebook_tag: default
-  overrides:
-    fit_verbosity: 2
+# Nb_BHPD1:
+#   notebook_id: BHPD1
+#   notebook_dir: BHPD
+#   notebook_src: 01-DNN-Regression.ipynb
+#   notebook_tag: default
+#   overrides:
+#     fit_verbosity: 2
+# Nb_BHPD2:
+#   notebook_id: BHPD2
+#   notebook_dir: BHPD
+#   notebook_src: 02-DNN-Regression-Premium.ipynb
+#   notebook_tag: default
+#   overrides:
+#     fit_verbosity: 2
 #
 # ------ MNIST -----------------------------------------------------
 #
@@ -62,11 +62,15 @@ Nb_BHPD2:
 #   notebook_dir: MNIST
 #   notebook_src: 01-DNN-MNIST.ipynb
 #   notebook_tag: default
+#   overrides:
+#     fit_verbosity: 2
 # Nb_MNIST2:
 #   notebook_id: MNIST2
 #   notebook_dir: MNIST
 #   notebook_src: 02-CNN-MNIST.ipynb
 #   notebook_tag: default
+#   overrides:
+#     fit_verbosity: 2
 #
 # ------ GTSRB -----------------------------------------------------
 #
@@ -78,6 +82,7 @@ Nb_BHPD2:
 #   overrides:
 #     scale: 0.01
 #     output_dir: ./data
+#     progress_verbosity: 2
 # Nb_GTSRB2:
 #   notebook_id: GTSRB2
 #   notebook_dir: GTSRB
@@ -90,6 +95,7 @@ Nb_BHPD2:
 #     batch_size: 64
 #     epochs: 5
 #     scale: 1
+#     fit_verbosity: 2
 # Nb_GTSRB3:
 #   notebook_id: GTSRB3
 #   notebook_dir: GTSRB
@@ -102,6 +108,7 @@ Nb_BHPD2:
 #     batch_size: 64
 #     epochs: 5
 #     scale: 1
+#     fit_verbosity: 2
 # Nb_GTSRB4:
 #   notebook_id: GTSRB4
 #   notebook_dir: GTSRB
@@ -114,11 +121,12 @@ Nb_BHPD2:
 #     batch_size: 64
 #     epochs: 5
 #     scale: 1
+#     fit_verbosity: 2
 # Nb_GTSRB5_r1:
 #   notebook_id: GTSRB5
 #   notebook_dir: GTSRB
 #   notebook_src: 05-Full-convolutions.ipynb
-#   notebook_tag: =1==done==
+#   notebook_tag: =1==ci==
 #   overrides:
 #     run_dir: ./run/GTSRB5_done
 #     enhanced_dir: './data'
@@ -128,7 +136,7 @@ Nb_BHPD2:
 #     epochs: 5
 #     scale: 1
 #     with_datagen: False
-#     verbose: 0
+#     fit_verbosity: 0
 # Nb_GTSRB6:
 #   notebook_id: GTSRB6
 #   notebook_dir: GTSRB
@@ -156,6 +164,7 @@ Nb_BHPD2:
 #     hide_most_frequently: default
 #     batch_size: default
 #     epochs: default
+#     fit_verbosity: 2
 # Nb_IMDB2:
 #   notebook_id: IMDB2
 #   notebook_dir: IMDB
@@ -195,6 +204,16 @@ Nb_BHPD2:
 #   notebook_dir: IMDB
 #   notebook_src: 05-LSTM-Keras.ipynb
 #   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     vocab_size: default
+#     hide_most_frequently: default
+#     review_len: default
+#     dense_vector_size: default
+#     batch_size: default
+#     epochs: default
+#     fit_verbosity: 2
+#     scale: .1
 #
 # ------ SYNOP -----------------------------------------------------
 #
@@ -205,12 +224,13 @@ Nb_BHPD2:
 #   notebook_tag: default
 #   overrides:
 #     run_dir: default
-#     scale: default
+#     scale: 0.1
 #     train_prop: default
 #     sequence_len: default
 #     predict_len: default
 #     batch_size: default
 #     epochs: default
+#     fit_verbosity: 2
 # Nb_SYNOP1:
 #   notebook_id: SYNOP1
 #   notebook_dir: SYNOP
@@ -224,7 +244,7 @@ Nb_BHPD2:
 #   notebook_src: SYNOP2-First-predictions.ipynb
 #   notebook_tag: default
 #   overrides:
-#     scale: default
+#     scale: 0.1
 #     train_prop: default
 #     sequence_len: default
 #     batch_size: default
@@ -239,89 +259,103 @@ Nb_BHPD2:
 #     scale: default
 #     train_prop: default
 #     sequence_len: default
-#     batch_size: default
-#     epochs: default
 #
 # ------ AE --------------------------------------------------------
 #
 # Nb_AE1:
 #   notebook_id: AE1
 #   notebook_dir: AE
-#   notebook_src: 01-AE-with-MNIST.ipynb
+#   notebook_src: 01-Prepare-MNIST-dataset.ipynb
 #   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     scale: 0.02
+#     prepared_dataset: default
+#     progress_verbosity: 2
 # Nb_AE2:
 #   notebook_id: AE2
 #   notebook_dir: AE
-#   notebook_src: 02-AE-with-MNIST-post.ipynb
+#   notebook_src: 02-AE-with-MNIST.ipynb
 #   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     prepared_dataset: default
+#     dataset_seed: default
+#     scale: default
+#     latent_dim: default
+#     train_prop: default
+#     batch_size: default
+#     epochs: default
+# Nb_AE3:
+#   notebook_id: AE3
+#   notebook_dir: AE
+#   notebook_src: 03-AE-with-MNIST-post.ipynb
+#   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     prepared_dataset: default
+#     dataset_seed: default
+#     scale: default
+#     train_prop: default
+# Nb_AE4:
+#   notebook_id: AE4
+#   notebook_dir: AE
+#   notebook_src: 04-ExtAE-with-MNIST.ipynb
+#   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     prepared_dataset: default
+#     dataset_seed: default
+#     scale: default
+#     latent_dim: default
+#     train_prop: default
+#     batch_size: default
+#     epochs: default
+# Nb_AE5:
+#   notebook_id: AE5
+#   notebook_dir: AE
+#   notebook_src: 05-ExtAE-with-MNIST.ipynb
+#   notebook_tag: default
+#   overrides:
+#     run_dir: default
+#     prepared_dataset: default
+#     dataset_seed: default
+#     scale: default
+#     latent_dim: default
+#     train_prop: default
+#     batch_size: default
+#     epochs: default
 #
 # ------ VAE -------------------------------------------------------
 #
-# Nb_VAE1:
-#   notebook_id: VAE1
-#   notebook_dir: VAE
-#   notebook_src: 01-VAE-with-MNIST.ipynb
-#   notebook_tag: default
-#   overrides:
-#     run_dir: ./run/VAE1_done
-#     scale: 1
-#     latent_dim: 2
-#     r_loss_factor: 0.994
-#     batch_size: 64
-#     epochs: 10
-# Nb_VAE2:
-#   notebook_id: VAE2
-#   notebook_dir: VAE
-#   notebook_src: 02-VAE-with-MNIST-post.ipynb
-#   notebook_tag: default
-#   overrides:
-#     run_dir: ./run/VAE1_done
-# Nb_VAE5:
-#   notebook_id: VAE5
-#   notebook_dir: VAE
-#   notebook_src: 05-About-CelebA.ipynb
-#   notebook_tag: default
-# Nb_VAE6:
-#   notebook_id: VAE6
-#   notebook_dir: VAE
-#   notebook_src: 06-Prepare-CelebA-datasets.ipynb
-#   notebook_tag: default
-#   overrides:
-#     scale: 0.01
-#     image_size: '(192,160)'
-#     output_dir: ./data
-#     exit_if_exist: False
-# Nb_VAE7:
-#   notebook_id: VAE7
-#   notebook_dir: VAE
-#   notebook_src: 07-Check-CelebA.ipynb
-#   notebook_tag: default
-#   overrides:
-#     image_size: '(192,160)'
-#     enhanced_dir: '{datasets_dir}/celeba/enhanced'
-# Nb_VAE8:
-#   notebook_id: VAE8
-#   notebook_dir: VAE
-#   notebook_src: 08-VAE-with-CelebA.ipynb
-#   notebook_tag: default
-#   overrides:
-#     run_dir: ./run/VAE8_done
-#     scale: 1
-#     image_size: '(192,160)'
-#     enhanced_dir: '{datasets_dir}/celeba/enhanced'
-#     latent_dim: 300
-#     r_loss_factor: 0.6
-#     batch_size: 64
-#     epochs: 15
-# Nb_VAE9:
-#   notebook_id: VAE9
-#   notebook_dir: VAE
-#   notebook_src: 09-VAE-with-CelebA-post.ipynb
-#   notebook_tag: default
-#   overrides:
-#     run_dir: ./run/VAE8_done
-#     image_size: '(192,160)'
-#     enhanced_dir: '{datasets_dir}/celeba/enhanced'
+Nb_VAE1:
+  notebook_id: VAE1
+  notebook_dir: VAE
+  notebook_src: 01-VAE-with-MNIST.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    latent_dim: default
+    loss_weights: default
+    scale: 0.01
+    seed: default
+    batch_size: default
+    epochs: default
+    fit_verbosity: 2
+Nb_VAE2:
+  notebook_id: VAE2
+  notebook_dir: VAE
+  notebook_src: 02-VAE-with-MNIST.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    latent_dim: default
+    loss_weights: default
+    scale: 0.01
+    seed: default
+    batch_size: default
+    epochs: default
+    fit_verbosity: 2
 #
 # ------ Misc ------------------------------------------------------
 #

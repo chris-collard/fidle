@@ -45,7 +45,9 @@
         "basename": "01-DNN-Regression.ipynb",
         "title": "Regression with a Dense Network (DNN)",
         "description": "Simple example of a regression with the dataset Boston Housing Prices Dataset (BHPD)",
-        "overrides": []
+        "overrides": [
+            "fit_verbosity"
+        ]
     },
     "BHPD2": {
         "id": "BHPD2",
@@ -53,7 +55,9 @@
         "basename": "02-DNN-Regression-Premium.ipynb",
         "title": "Regression with a Dense Network (DNN) - Advanced code",
         "description": "A more advanced implementation of the precedent example",
-        "overrides": []
+        "overrides": [
+            "fit_verbosity"
+        ]
     },
     "MNIST1": {
         "id": "MNIST1",
@@ -61,7 +65,9 @@
         "basename": "01-DNN-MNIST.ipynb",
         "title": "Simple classification with DNN",
         "description": "An example of classification using a dense neural network for the famous MNIST dataset",
-        "overrides": []
+        "overrides": [
+            "fit_verbosity"
+        ]
     },
     "MNIST2": {
         "id": "MNIST2",
@@ -69,7 +75,9 @@
         "basename": "02-CNN-MNIST.ipynb",
         "title": "Simple classification with CNN",
         "description": "An example of classification using a convolutional neural network for the famous MNIST dataset",
-        "overrides": []
+        "overrides": [
+            "fit_verbosity"
+        ]
     },
     "GTSRB1": {
         "id": "GTSRB1",
@@ -79,7 +87,8 @@
         "description": "Episode 1 : Analysis of the GTSRB dataset and creation of an enhanced dataset",
         "overrides": [
             "scale",
-            "output_dir"
+            "output_dir",
+            "progress_verbosity"
         ]
     },
     "GTSRB2": {
@@ -94,7 +103,8 @@
             "dataset_name",
             "batch_size",
             "epochs",
-            "scale"
+            "scale",
+            "fit_verbosity"
         ]
     },
     "GTSRB3": {
@@ -109,7 +119,8 @@
             "dataset_name",
             "batch_size",
             "epochs",
-            "scale"
+            "scale",
+            "fit_verbosity"
         ]
     },
     "GTSRB4": {
@@ -124,7 +135,8 @@
             "dataset_name",
             "batch_size",
             "epochs",
-            "scale"
+            "scale",
+            "fit_verbosity"
         ]
     },
     "GTSRB5": {
@@ -142,7 +154,7 @@
             "epochs",
             "scale",
             "with_datagen",
-            "verbose"
+            "fit_verbosity"
         ]
     },
     "GTSRB6": {
@@ -191,7 +203,8 @@
             "vocab_size",
             "hide_most_frequently",
             "batch_size",
-            "epochs"
+            "epochs",
+            "fit_verbosity"
         ]
     },
     "IMDB2": {
@@ -208,7 +221,8 @@
             "dense_vector_size",
             "batch_size",
             "epochs",
-            "output_dir"
+            "output_dir",
+            "fit_verbosity"
         ]
     },
     "IMDB3": {
@@ -244,13 +258,15 @@
         "title": "Sentiment analysis with a RNN network",
         "description": "Still the same problem, but with a network combining embedding and RNN",
         "overrides": [
+            "run_dir",
             "vocab_size",
             "hide_most_frequently",
             "review_len",
             "dense_vector_size",
             "batch_size",
             "epochs",
-            "output_dir"
+            "fit_verbosity",
+            "scale"
         ]
     },
     "LADYB1": {
@@ -292,7 +308,8 @@
             "train_prop",
             "sequence_len",
             "batch_size",
-            "epochs"
+            "epochs",
+            "fit_verbosity"
         ]
     },
     "SYNOP3": {
@@ -306,9 +323,7 @@
             "iterations",
             "scale",
             "train_prop",
-            "sequence_len",
-            "batch_size",
-            "epochs"
+            "sequence_len"
         ]
     },
     "AE1": {
@@ -318,7 +333,10 @@
         "title": "Prepare a noisy MNIST dataset",
         "description": "Episode 1: Preparation of a noisy MNIST dataset",
         "overrides": [
-            "run_dir"
+            "run_dir",
+            "prepared_dataset",
+            "scale",
+            "progress_verbosity"
         ]
     },
     "AE2": {
@@ -400,6 +418,7 @@
             "seed",
             "batch_size",
             "epochs",
+            "fit_verbosity",
             "run_dir"
         ]
     },
@@ -417,6 +436,7 @@
             "seed",
             "batch_size",
             "epochs",
+            "fit_verbosity",
             "run_dir"
         ]
     },

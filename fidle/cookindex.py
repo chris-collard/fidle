@@ -19,7 +19,7 @@ import pandas as pd
 from IPython.display import display, Markdown, HTML
 
 import re
-import sys, os, glob
+import sys, os, glob, yaml
 import json
 from datetime import datetime
 from collections import OrderedDict
@@ -31,10 +31,26 @@ import fidle.config as config
 # -----------------------------------------------------------------------------
 # To built README.md / README.ipynb
 # -----------------------------------------------------------------------------
-#    get_files      :  Get files lists
-#    get_infos      :  Get infos about a entry
-#    get_catalog    :  Get a catalog of all entries
+#    get_files          :  Get files lists
+#    get_notebook_infos :  Get infos about a entry
+#    get_catalog        :  Get a catalog of all entries
 # -----------------------------------------------------------------------------
+
+def build_catalog(directories):
+
+    # ---- Get the notebook list
+    #
+    files_list = get_files(directories.keys())
+
+    # ---- Get a detailled catalog for this list
+    #
+    catalog = get_catalog(files_list)
+
+    with open(config.CATALOG_FILE,'wt') as fp:
+        n=len(catalog)
+        json.dump(catalog,fp,indent=4)
+        print(f'Catalog saved as         : {config.CATALOG_FILE} ({n} entries)')
+
 
 def get_files(directories, top_dir='..'):
     '''
@@ -70,7 +86,7 @@ def get_notebook_infos(filename, top_dir='..'):
     return:
         dict : with infos.
     '''
-    print('Read : ',filename)
+    # print('Read : ',filename)
     about={}
     about['id']          = '??'
     about['dirname']     = os.path.dirname(filename)
@@ -181,6 +197,15 @@ def get_catalog(files_list=None, top_dir='..'):
         
 
 def tag(tag, text, document):
+    '''
+    Put a text inside a tag
+    args:
+        tag : tag prefix name
+        txt : text to insert
+        document : document 
+    return:
+        updated document
+    '''
     debut  = f'<!-- {tag}_BEGIN -->'
     fin    = f'<!-- {tag}_END -->'
 
@@ -189,7 +214,72 @@ def tag(tag, text, document):
 
 
 def read_catalog():
+    '''
+    Read json catalog file.
+    args:
+        None
+    return:
+        json catalog
+    '''
     with open(config.CATALOG_FILE) as fp:
         catalog = json.load(fp)
     return catalog
 
+
+# -----------------------------------------------------------------------------
+# To built default.yml profile
+# -----------------------------------------------------------------------------
+#    build_default_profile :  Get default profile
+# -----------------------------------------------------------------------------
+
+
+def build_default_profile(output_tag='==ci=='):
+    '''
+    Return a default profile for continous integration.
+    Ce profile contient une liste des notebooks avec les paramètres modifiables.
+    Il peut être modifié et sauvegardé, puis être utilisé pour lancer l'éxécution
+    des notebooks.
+    params:
+        catalog : Notebooks catalog. if None (default), load config.CATALOG_FILE
+        output_tag  : tag name of generated notebook
+        profile_filename : Default profile filename
+    return:
+        None
+    '''
+    
+    catalog = read_catalog()
+
+    metadata   = { 'version'       : '1.0', 
+                   'output_tag'    : output_tag, 
+                   'save_figs'     : True, 
+                   'description'   : 'Default generated profile',
+                   'output_ipynb'  : '<directory for ipynb>',
+                   'output_html'   : '<directory for html>',
+                   'report_json'   : '<report json file>',
+                   'report_error'  : '<error file>'
+                   }
+    profile  = { '_metadata_':metadata }
+    for id, about in catalog.items():
+        
+        id        = about['id']
+        title     = about['title']
+        dirname   = about['dirname']
+        basename  = about['basename']
+        overrides = about.get('overrides',None)
+    
+        notebook = {}
+        notebook['notebook_id']  = id
+        notebook['notebook_dir'] = dirname
+        notebook['notebook_src'] = basename
+        notebook['notebook_tag'] = 'default'
+        if len(overrides)>0:
+            notebook['overrides']={ name:'default' for name in overrides }
+                    
+        profile[f'Nb_{id}']=notebook
+        
+    # ---- Save profile
+    #
+    with open(config.PROFILE_FILE,'wt') as fp:
+        n=len(profile)-1
+        yaml.dump(profile, fp, sort_keys=False)
+        print(f'default profile saved as : {config.PROFILE_FILE} ({n} entries)')

@@ -39,62 +39,7 @@ _report_json  = None
 _report_error = None
 
 
-def get_default_profile(catalog=None, output_tag='==ci==', save_figs=True):
-    '''
-    Return a default profile for continous integration.
-    Ce profile contient une liste des notebooks avec les paramètres modifiables.
-    Il peut être modifié et sauvegardé, puis être utilisé pour lancer l'éxécution
-    des notebooks.
-    params:
-        catalog : Notebooks catalog. if None (default), load config.CATALOG_FILE
-        output_tag  : tag name of generated notebook
-        save_figs : save figs or not for generated notebooks (True)
-    return:
-        profile : dict with run parameters
-    '''
-    
-    if catalog is None:
-        catalog = cookindex.read_catalog()
-
-    metadata   = { 'version'       : '1.0', 
-                   'output_tag'    : output_tag, 
-                   'save_figs'     : save_figs, 
-                   'description'   : 'Default generated profile',
-                   'output_ipynb'  : '<directory for ipynb>',
-                   'output_html'   : '<directory for html>',
-                   'report_json'   : '<report json file>',
-                   'report_error'  : '<error file>'
-                   }
-    profile  = { '_metadata_':metadata }
-    for id, about in catalog.items():
-        
-        id        = about['id']
-        title     = about['title']
-        dirname   = about['dirname']
-        basename  = about['basename']
-        overrides = about.get('overrides',None)
-    
-        notebook = {}
-        notebook['notebook_id']  = id
-        notebook['notebook_dir'] = dirname
-        notebook['notebook_src'] = basename
-        notebook['notebook_tag'] = 'default'
-        if len(overrides)>0:
-            notebook['overrides']={ name:'default' for name in overrides }
-                    
-        profile[f'Nb_{id}']=notebook
-        
-    return profile
-
-
-def save_profile(profile, filename):
-    '''Save profile in yaml format'''
-    with open(filename,'wt') as fp:
-        yaml.dump(profile, fp, sort_keys=False)
-        print(f'Profile saved as {filename}')
-        print('Entries : ',len(profile)-1)
-
-        
+       
 def load_profile(filename):
     '''Load yaml profile'''
     with open(filename,'r') as fp:
@@ -357,6 +302,11 @@ def init_ci_report(report_json, report_error, metadata, verbose=True):
     
     _report_json  = os.path.abspath(report_json)
     _report_error = os.path.abspath(report_error)
+
+    # ---- Create directories
+    #
+    report_dir=os.path.dirname(report_json)
+    os.makedirs(report_dir, mode=0o750, exist_ok=True)
     
     # ---- Create json report
     #
@@ -484,9 +434,9 @@ def build_ci_report(profile_name, top_dir='..'):
         state = entry['state']
 
         cols = []
-        cols.append( f'<a href="{dir}">{dir}</a>'       )
-        cols.append( f'<a href="{dir}/{out}">{id}</a>'  )
-        cols.append( f'<a href="{dir}/{out}">{src}</a>' )
+        cols.append( f'<a href="{dir}"       target="_blank">{dir}</a>'       )
+        cols.append( f'<a href="{dir}/{out}" target="_blank">{id}</a>'  )
+        cols.append( f'<a href="{dir}/{out}" target="_blank">{src}</a>' )
         cols.append( start )
         cols.append( dur   )
         cols.append( state )
@@ -547,7 +497,7 @@ def _get_html_report(html_metadata, html_report):
 
             {logo_header}
 
-            <div class='title'>Notebook performed :</div>
+            <div class='title'>Notebooks performed :</div>
             <div class="result">
                 <p>Here is a "correction" of all the notebooks.</p>
                 <p>These notebooks have been run on Jean-Zay, on GPU (V100) and the results are proposed here in HTML format.</p>    
