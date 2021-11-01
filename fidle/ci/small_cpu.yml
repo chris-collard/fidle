@@ -348,7 +348,7 @@ Nb_VAE2:
   notebook_src: 02-VAE-with-MNIST.ipynb
   notebook_tag: default
   overrides:
-    run_dir: default
+    run_dir: ./run/VAE2.000
     latent_dim: default
     loss_weights: default
     scale: 0.01
@@ -356,6 +356,24 @@ Nb_VAE2:
     batch_size: default
     epochs: default
     fit_verbosity: 2
+Nb_VAE3:
+  notebook_id: VAE3
+  notebook_dir: VAE
+  notebook_src: 03-VAE-with-MNIST-post.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: ./run/VAE2.000
+    scale: default
+    seed: default
+Nb_VAE5:
+  notebook_id: VAE5
+  notebook_dir: VAE
+  notebook_src: 05-About-CelebA.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    progress_verbosity: 2
+
 #
 # ------ Misc ------------------------------------------------------
 #
