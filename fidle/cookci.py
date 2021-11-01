@@ -45,11 +45,11 @@ def load_profile(filename):
     with open(filename,'r') as fp:
         profile=yaml.load(fp, Loader=yaml.FullLoader)
         print(f'\nLoad profile :{filename}')
-        print('    Entries : ',len(profile)-1)
+        print('  - Entries : ',len(profile)-1)
         return profile
     
     
-def run_profile(profile_name, top_dir='..'):
+def run_profile(profile_name, reset=False, filter=r'.*', top_dir='..'):
     '''
     Récupère la liste des notebooks et des paramètres associés,
     décrit dans le profile, et pour chaque notebook :
@@ -61,20 +61,20 @@ def run_profile(profile_name, top_dir='..'):
         profile_name : nom du profile d'éxécution
         top_dir : chemin relatif vers la racine fidle (..)
     '''
-    
-    print('\n== Run profile session - FIDLE 2021')
-    print(f'== Version : {VERSION}')
+
+    print(f'\n=== Run profile session - FIDLE 2021')
+    print(f'=== Version : {VERSION}')
     
     chrono_start('main')
     
-    # ---- Retrieve profile
+    # ---- Retrieve profile ---------------------------------------------------
     #
     profile   = load_profile(profile_name)
     config    = profile['_metadata_']
     notebooks = profile
     del notebooks['_metadata_']   
     
-    # ---- Report file
+    # ---- Report file --------------------------------------------------------
     #
     metadata = config
     metadata['host']    = os.uname()[1]
@@ -82,26 +82,34 @@ def run_profile(profile_name, top_dir='..'):
 
     report_json  = top_dir + '/' + config['report_json' ]
     report_error = top_dir + '/' + config['report_error']
-    init_ci_report(report_json, report_error, metadata)
+
+    init_ci_report(report_json, report_error, metadata, reset=reset)
     
-    # ---- Where I am, me and the output_dir
+    # ---- Where I am, me and the output_dir ----------------------------------
     #
     home         = os.getcwd()
     output_ipynb = config['output_ipynb']
     output_html  = config['output_html']
         
-    # ---- Environment vars
+    # ---- Environment vars ---------------------------------------------------
     #
+    print('\nSet environment var:')
     environment_vars = config['environment_vars']
     for name,value in environment_vars.items():
         os.environ[name] = str(value)
-        print(f'Set : {name:20s} = {value}')
+        print(f'  - {name:20s} = {value}')
 
-    # ---- For each notebook
+    # ---- For each notebook --------------------------------------------------
     #
+    print('\n---- Start running process ------------------------')
     for run_id,about in notebooks.items():
+
+        # ---- Filtering ------------------------------------------------------
+        #
+        if not re.match(filter, run_id):
+            continue
         
-        print(f'\nRun : {run_id}')
+        print(f'\n  - Run : {run_id}')
 
         # ---- Get notebook infos ---------------------------------------------
         #
@@ -128,7 +136,7 @@ def run_profile(profile_name, top_dir='..'):
         
         to_unset=[]
         if isinstance(overrides,dict):
-            print('    set overrides :')
+            print('    - Overrides :')
             for name,value in overrides.items():
                 # ---- Default : no nothing
                 if value=='default' : continue
@@ -139,7 +147,7 @@ def run_profile(profile_name, top_dir='..'):
                 # ---- For cleaning
                 to_unset.append(env_name)
                 # ---- Fine :(-)
-                print(f'       {env_name:38s} = {env_value}')
+                print(f'      - {env_name:38s} = {env_value}')
     
         # ---- Run it ! -------------------------------------------------------
 
@@ -158,7 +166,7 @@ def run_profile(profile_name, top_dir='..'):
         
         # ---- Try to run...
         #
-        print('    Run notebook...',end='')
+        print('    - Run notebook...',end='')
         try:
             ep = ExecutePreprocessor(timeout=6000, kernel_name="python3")
             ep.preprocess(notebook)
@@ -177,7 +185,7 @@ def run_profile(profile_name, top_dir='..'):
         #
         chrono_stop('nb')        
         update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, output_name, end=True, happy_end=happy_end)
-        print('    Duration : ',chrono_get_delay('nb') )
+        print('    - Duration : ',chrono_get_delay('nb') )
 
         # ---- Back to home
         #
@@ -198,7 +206,7 @@ def run_profile(profile_name, top_dir='..'):
             os.makedirs(save_dir, mode=0o750, exist_ok=True)
             with open(  f'{save_dir}/{output_name}.ipynb', mode="w", encoding='utf-8') as fp:
                 nbformat.write(notebook, fp)
-            print(f'    Saved {save_dir}/{output_name}.ipynb')
+            print(f'    - Saved {save_dir}/{output_name}.ipynb')
 
         # ---- Save notebook as html ------------------------------------------
         #
@@ -217,7 +225,7 @@ def run_profile(profile_name, top_dir='..'):
             os.makedirs(save_dir, mode=0o750, exist_ok=True)
             with open(  f'{save_dir}/{output_name}.html', mode='w') as fp:
                 fp.write(body_html)
-            print(f'    Saved {save_dir}/{output_name}.html')
+            print(f'    - Saved {save_dir}/{output_name}.html')
 
         # ---- Clean all ------------------------------------------------------
         #
@@ -226,8 +234,9 @@ def run_profile(profile_name, top_dir='..'):
 
     # ---- End of running
     chrono_stop('main')
-    print('\nEnd of running process')
-    print('    Duration :', chrono_get_delay('main'))
+    print('\n---- End of running process -----------------------')
+
+    print('\nDuration :', chrono_get_delay('main'))
     complete_ci_report()
     
     
@@ -296,34 +305,50 @@ def reset_chrono():
     start_time, end_time = {},{}
     
 
-def init_ci_report(report_json, report_error, metadata, verbose=True):
+def init_ci_report(report_json, report_error, metadata, reset=True):
     
     global _report_json, _report_error
     
     _report_json  = os.path.abspath(report_json)
     _report_error = os.path.abspath(report_error)
 
-    # ---- Create directories
+    print('\nInit report :')
+    print(f'  - report file is : {_report_json}')
+    print(f'  - error  file is : {_report_error}')
+
+    # ---- Create directories if doesn't exist
     #
     report_dir=os.path.dirname(report_json)
     os.makedirs(report_dir, mode=0o750, exist_ok=True)
     
+    # ---- Reset ?
+    #
+    if reset is False and os.path.isfile(_report_json) :
+        with open(_report_json) as fp:
+            report = json.load(fp)
+        print('  - Report is reloaded')
+    else:
+        report={}
+        print('- Report is reseted')
+
+    metadata['reseted']=reset     
+    metadata['start']=chrono_get_start('main')
+
     # ---- Create json report
     #
-    metadata['start']=chrono_get_start('main')
-    data={ '_metadata_':metadata }
+    report['_metadata_']=metadata
     with open(_report_json,'wt') as fp:
-        json.dump(data,fp,indent=4)
-    if verbose : print(f'\nCreate new ci report : {_report_json}')
-    
+        json.dump(report,fp,indent=4)
+    print('  - Report file saved')
+
     # ---- Reset error
     #
     if os.path.exists(_report_error):
         os.remove(_report_error)
-    if verbose : print(f'Remove error file    : {_report_error}')
+    print('  - Error file removed')
 
     
-def complete_ci_report(verbose=True):
+def complete_ci_report():
 
     global _report_json
 
@@ -336,7 +361,8 @@ def complete_ci_report(verbose=True):
     with open(_report_json,'wt') as fp:
         json.dump(report,fp,indent=4)
         
-    if verbose : print(f'\nComplete ci report : {_report_json}')
+    print(f'\nComplete ci report :')
+    print(f'  - Report file saved')
     
     
 def update_ci_report(run_id, notebook_id, notebook_dir, notebook_src, notebook_out, start=False, end=False, happy_end=True):
@@ -395,11 +421,12 @@ def build_ci_report(profile_name, top_dir='..'):
     report_json  = os.path.abspath(report_json)
     report_error = os.path.abspath(report_error)
 
-
     # ---- Load report
     #
+    print('\nReport in progress:')
     with open(report_json) as infile:
         report = json.load( infile )
+    print(f'  - Load json report file : {_report_json}')
 
     # ---- metadata
     #
@@ -409,7 +436,7 @@ def build_ci_report(profile_name, top_dir='..'):
     output_html = metadata['output_html']
 
     if output_html.lower()=='none':
-        print('No HTML output is specified in profile...')
+        print('  - No HTML output is specified in profile...')
         return
     
     reportfile = os.path.abspath( f'{top_dir}/{output_html}/index.html' )
@@ -451,7 +478,7 @@ def build_ci_report(profile_name, top_dir='..'):
     body_html = _get_html_report(html_metadata, html_report)
     with open(reportfile, "wt") as fp:
         fp.write(body_html)
-    print(f'HTML report saved as : {reportfile}')
+    print(f'  - Saved HTML report : {reportfile}')
             
 
     

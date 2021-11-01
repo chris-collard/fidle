@@ -360,6 +360,7 @@ Nb_VAE5:
   notebook_tag: default
   overrides:
     run_dir: default
+    progress_verbosity: default
 Nb_VAE6:
   notebook_id: VAE6
   notebook_dir: VAE
@@ -367,6 +368,7 @@ Nb_VAE6:
   notebook_tag: default
   overrides:
     run_dir: default
+    progress_verbosity: default
     scale: default
     seed: default
     cluster_size: default

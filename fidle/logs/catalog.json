@@ -426,7 +426,7 @@
         "id": "VAE2",
         "dirname": "VAE",
         "basename": "02-VAE-with-MNIST.ipynb",
-        "title": "First VAE, using a subclass model (MNIST dataset)",
+        "title": "VAE, using a custom model class  (MNIST dataset)",
         "description": "Construction and training of a VAE, using model subclass, with a latent space of small dimension.",
         "overrides": [
             "run_dir",
@@ -459,7 +459,8 @@
         "title": "Another game play : About the CelebA dataset",
         "description": "Episode 1 : Presentation of the CelebA dataset and problems related to its size",
         "overrides": [
-            "run_dir"
+            "run_dir",
+            "progress_verbosity"
         ]
     },
     "VAE6": {
@@ -470,6 +471,7 @@
         "description": "Episode 2 : Analysis of the CelebA dataset and creation of an clustered and usable dataset",
         "overrides": [
             "run_dir",
+            "progress_verbosity",
             "scale",
             "seed",
             "cluster_size",

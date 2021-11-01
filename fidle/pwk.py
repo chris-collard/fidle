@@ -95,9 +95,10 @@ def init(name=None, run_directory='./run'):
     log_level = int(os.getenv('TF_CPP_MIN_LOG_LEVEL', 0 ))
     str_level = ['Info + Warning + Error','Warning + Error','Error only'][log_level]
     
-    # ---- Today and now
+    # ---- Today, now and hostname
     #
     _start_time = datetime.datetime.now()
+    h = os.uname()
     
     # ---- Hello world
     #
@@ -105,6 +106,7 @@ def init(name=None, run_directory='./run'):
     print('Version              :', config.VERSION)
     print('Notebook id          :', notebook_id)
     print('Run time             :', _start_time.strftime("%A %d %B %Y, %H:%M:%S"))
+    print('Hostname             :', f'{h[1]} ({h[0]})')
     print('Tensorflow log level :', str_level,f' (={log_level})')
     print('Datasets dir         :', datasets_dir)
     print('Run dir              :', run_dir)
@@ -293,12 +295,14 @@ def update_progress(what,i,imax, redraw=False, verbosity=1):
     """
     Display a text progress bar, as :
     My progress bar : ############# 34%
-    args:
+
+    Args:
         what  : Progress bar name
         i     : Current progress
         imax  : Max value for i
         verbosity : progress bar verbosity (0: no bar, 1: progress bar, 2: one line)
-    return:
+        
+    Returns:
         nothing
     """
     if verbosity==0:   return

@@ -14,7 +14,7 @@
 
 # ---- Version -----------------------------------------------------
 #
-VERSION = '2.0.26'
+VERSION = '2.0.27'
 
 # ---- Default notebook name ---------------------------------------
 #
@@ -43,8 +43,8 @@ CI_ERROR_FILE  = '../fidle/logs/ci_ERROR.txt'
 
 # ---- Used modules -------------------------------------------------
 #
-USED_MODULES   = ['tensorflow','tensorflow.keras','sklearn','skimage',
-                  'matplotlib','plotly','pandas','jupyterlab',
+USED_MODULES   = ['tensorflow','tensorflow.keras','numpy', 'sklearn',
+                  'skimage', 'matplotlib','plotly','pandas','jupyterlab',
                   'pytorch', 'torchvision']
 
 # -------------------------------------------------------------------

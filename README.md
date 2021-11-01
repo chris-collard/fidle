@@ -129,7 +129,7 @@ Episode 5 : Construction of an advanced denoiser and classifier model
 ### Generative network with Variational Autoencoder (VAE)
 - **[VAE1](VAE/01-VAE-with-MNIST.ipynb)** - [First VAE, using functional API (MNIST dataset)](VAE/01-VAE-with-MNIST.ipynb)  
 Construction and training of a VAE, using functional APPI, with a latent space of small dimension.
-- **[VAE2](VAE/02-VAE-with-MNIST.ipynb)** - [First VAE, using a subclass model (MNIST dataset)](VAE/02-VAE-with-MNIST.ipynb)  
+- **[VAE2](VAE/02-VAE-with-MNIST.ipynb)** - [VAE, using a custom model class  (MNIST dataset)](VAE/02-VAE-with-MNIST.ipynb)  
 Construction and training of a VAE, using model subclass, with a latent space of small dimension.
 - **[VAE3](VAE/03-VAE-with-MNIST-post.ipynb)** - [Analysis of the VAE's latent space of MNIST dataset](VAE/03-VAE-with-MNIST-post.ipynb)  
 Visualization and analysis of the VAE's latent space of the dataset MNIST
