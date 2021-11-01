@@ -37,7 +37,7 @@ Current Version : <!-- VERSION_BEGIN -->
 
 | | | |
 |:--:|:--:|:--:|
-| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://fidle.cnrs.fr/supports)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://fidle.cnrs.fr/notebooks)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://fidle.cnrs.fr/datasets)**<br>All the needed datasets<br>(1.2 Go)|
+| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://fidle.cnrs.fr/supports)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://fidle.cnrs.fr/notebooks)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://fidle.cnrs.fr/fidle-datasets.tar)**<br>All the needed datasets<br>(1.2 Go)|
 
 Have a look about **[How to get and install](https://fidle.cnrs.fr/installation)** these notebooks and datasets.
 

@@ -399,6 +399,7 @@ Nb_VAE8:
     loss_weights: default
     batch_size: default
     epochs: default
+    fit_verbosity: default
 Nb_VAE9:
   notebook_id: VAE9
   notebook_dir: VAE
@@ -420,11 +421,12 @@ Nb_DCGAN01:
   notebook_tag: default
   overrides:
     run_dir: default
+    scale: default
     latent_dim: default
     epochs: default
     batch_size: default
     num_img: default
-    scale: default
+    fit_verbosity: default
 Nb_ACTF1:
   notebook_id: ACTF1
   notebook_dir: Misc

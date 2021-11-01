@@ -508,6 +508,7 @@
             "loss_weights",
             "batch_size",
             "epochs",
+            "fit_verbosity",
             "run_dir"
         ]
     },
@@ -539,11 +540,12 @@
         "description": "Episode 1 : Draw me a sheep, revisited with a DCGAN",
         "overrides": [
             "run_dir",
+            "scale",
             "latent_dim",
             "epochs",
             "batch_size",
             "num_img",
-            "scale",
+            "fit_verbosity",
             "run_dir"
         ]
     },
