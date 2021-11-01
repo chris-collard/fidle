@@ -1,9 +1,9 @@
-name: fidle-gpu
+name: fidle
 channels:
   - default
 dependencies:
   - numpy=1.19
-  - tensorflow-gpu
+  - tensorflow-gpu>=2.4
   - keras
   - scikit-learn
   - scikit-image
