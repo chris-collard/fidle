@@ -27,13 +27,12 @@
 
 # ==== Notebook parameters =========================================
 
-MODULE_ENV="tensorflow-gpu/py3/2.4.0"
+MODULE_ENV="tensorflow-gpu/py3/2.5.0"
 NOTEBOOK_DIR="$WORK/fidle/fidle"
 
-FIDLE_OVERRIDE_PROFILE="./ci/fidle-ad_s06.yml"
+FIDLE_OVERRIDE_PROFILE="./ci/small_cpu.yml"
 
 NOTEBOOK_SRC1="02-running-ci-tests.ipynb"
-NOTEBOOK_SRC2="03-ci-report.ipynb"
 
 # ==================================================================
 
@@ -48,7 +47,6 @@ echo "Job node list : $SLURM_JOB_NODELIST"
 echo '------------------------------------------------------------'
 echo "Notebook dir  : $NOTEBOOK_DIR"
 echo "Notebook src1 : $NOTEBOOK_SRC1"
-echo "Notebook src2 : $NOTEBOOK_SRC2"
 echo "Environment   : $MODULE_ENV"
 echo '------------------------------------------------------------'
 env | grep FIDLE_OVERRIDE | awk 'BEGIN { FS = "=" } ; { printf("%-35s : %s\n",$1,$2) }'
@@ -64,6 +62,5 @@ module load "$MODULE_ENV"
 cd $NOTEBOOK_DIR
 
 jupyter nbconvert --ExecutePreprocessor.timeout=-1 --to notebook --output "${NOTEBOOK_SRC1%.*}==${SLURM_JOB_ID}==.ipynb" --execute "$NOTEBOOK_SRC1"
-jupyter nbconvert --ExecutePreprocessor.timeout=-1 --to notebook --output "${NOTEBOOK_SRC2%.*}==${SLURM_JOB_ID}==.ipynb" --execute "$NOTEBOOK_SRC2"
 
 echo 'Done.'
