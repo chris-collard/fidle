@@ -384,6 +384,7 @@ Nb_VAE7:
     run_dir: default
     image_size: default
     enhanced_dir: default
+    progress_verbosity: default
 Nb_VAE8:
   notebook_id: VAE8
   notebook_dir: VAE

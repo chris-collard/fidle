@@ -489,7 +489,8 @@
         "overrides": [
             "run_dir",
             "image_size",
-            "enhanced_dir"
+            "enhanced_dir",
+            "progress_verbosity"
         ]
     },
     "VAE8": {

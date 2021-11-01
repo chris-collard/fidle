@@ -401,28 +401,77 @@ Nb_VAE6:
   notebook_tag: default
   overrides:
     run_dir: default
-    progress_verbosity: 2
     scale: 0.01
     seed: default
     cluster_size: default
-    image_size: '(192,160)'
+    image_size: default
     output_dir: ./data
     exit_if_exist: False
+    progress_verbosity: 2
+
+Nb_VAE7:
+  notebook_id: VAE7
+  notebook_dir: VAE
+  notebook_src: 07-Check-CelebA.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    image_size: default
+    enhanced_dir: ./data
+    progress_verbosity: 2
+
+Nb_VAE8:
+  notebook_id: VAE8
+  notebook_dir: VAE
+  notebook_src: 08-VAE-with-CelebA.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    scale: 0.1
+    image_size: default
+    enhanced_dir: ./data
+    latent_dim: default
+    loss_weights: default
+    batch_size: default
+    epochs: default
+    progress_verbosity: 2
+
+Nb_VAE9:
+  notebook_id: VAE9
+  notebook_dir: VAE
+  notebook_src: 09-VAE-with-CelebA-post.ipynb
+  notebook_tag: default
+  overrides:
+    run_dir: default
+    image_size: default
+    enhanced_dir: ./data
+
+# ------ DCGAN -----------------------------------------------------
+#
+Nb_DCGAN01:
+  notebook_id: DCGAN01
+  notebook_dir: DCGAN
+  notebook_src: 01-DCGAN-Draw-me-a-sheep.ipynb
+  notebook_tag: default
+  overrides:
+    scale: 0.005
+    run_dir: default
+    latent_dim: default
+    epochs: 5
+    batch_size: default
+    num_img: default
+    fit_verbosity: 2
 #
 # ------ Misc ------------------------------------------------------
 #
-# Nb_ACTF1:
-#   notebook_id: ACTF1
-#   notebook_dir: Misc
-#   notebook_src: Activation-Functions.ipynb
-#   notebook_tag: default
-# Nb_NP1:
-#   notebook_id: NP1
-#   notebook_dir: Misc
-#   notebook_src: Numpy.ipynb
-#   notebook_tag: default
-# Nb_TSB1:
-#   notebook_id: TSB1
-#   notebook_dir: Misc
-#   notebook_src: Using-Tensorboard.ipynb
-#   notebook_tag: default
+Nb_ACTF1:
+  notebook_id: ACTF1
+  notebook_dir: Misc
+  notebook_src: Activation-Functions.ipynb
+  notebook_tag: default
+
+Nb_NP1:
+  notebook_id: NP1
+  notebook_dir: Misc
+  notebook_src: Numpy.ipynb
+  notebook_tag: default
