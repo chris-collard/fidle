@@ -30,7 +30,9 @@
 MODULE_ENV="tensorflow-gpu/py3/2.5.0"
 NOTEBOOK_DIR="$WORK/fidle/fidle"
 
-FIDLE_OVERRIDE_PROFILE="./ci/small_cpu.yml"
+FIDLE_OVERRIDE_RUNCI_profile_name='./ci/small_cpu.yml'
+FIDLE_OVERRIDE_RUNCI_reset='False'
+FIDLE_OVERRIDE_RUNCI_filter='Nb_GTSRB.*|Nb_AE.*'
 
 NOTEBOOK_SRC1="02-running-ci-tests.ipynb"
 
