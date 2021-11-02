@@ -20,8 +20,8 @@
 #SBATCH --cpus-per-task=10                             # nombre de coeurs à réserver (un quart du noeud)
 #SBATCH --hint=nomultithread                           # on réserve des coeurs physiques et non logiques
 #SBATCH --time=05:00:00                                # temps exécution maximum demande (HH:MM:SS)
-#SBATCH --output="CI_%j.out"                           # nom du fichier de sortie
-#SBATCH --error="CI_%j.err"                            # nom du fichier d'erreur (ici commun avec la sortie)
+#SBATCH --output="Fidle_%j.out"                        # nom du fichier de sortie
+#SBATCH --error="Fidle_%j.err"                         # nom du fichier d'erreur (ici commun avec la sortie)
 #SBATCH --mail-user=Jean-Luc.Parouty@grenoble-inp.fr
 #SBATCH --mail-type=ALL
 
@@ -30,7 +30,7 @@
 MODULE_ENV="tensorflow-gpu/py3/2.5.0"
 NOTEBOOK_DIR="$WORK/fidle/fidle"
 
-FIDLE_OVERRIDE_RUNCI_profile_name='./ci/small_cpu.yml'
+FIDLE_OVERRIDE_RUNCI_profile_name='./ci/smart_gpu.yml'
 FIDLE_OVERRIDE_RUNCI_reset='False'
 FIDLE_OVERRIDE_RUNCI_filter='Nb_GTSRB.*|Nb_AE.*'
 
