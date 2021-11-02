@@ -9,7 +9,7 @@
 # A simple module to host some common functions for practical work
 # Jean-Luc Parouty 2020
 
-import os,sys
+import os,sys,platform
 import glob
 import shutil
 from datetime import datetime
@@ -98,7 +98,7 @@ def init(name=None, run_directory='./run'):
     # ---- Today, now and hostname
     #
     _start_time = datetime.datetime.now()
-    h = os.uname()
+    h = platform.uname()
     
     # ---- Hello world
     #
