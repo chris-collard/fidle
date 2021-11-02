@@ -315,7 +315,7 @@ Nb_AE1:
   overrides:
     run_dir: default
     scale: 1
-    prepared_dataset: ./data
+    prepared_dataset: default
     progress_verbosity: 2
 
 Nb_AE2:
@@ -325,7 +325,7 @@ Nb_AE2:
   notebook_tag: default
   overrides:
     run_dir: default
-    prepared_dataset: ./data
+    prepared_dataset: default
     dataset_seed: default
     scale: 1
     latent_dim: default
@@ -340,7 +340,7 @@ Nb_AE3:
   notebook_tag: default
   overrides:
     run_dir: ./run/AE2
-    prepared_dataset: ./data
+    prepared_dataset: default
     dataset_seed: default
     scale: 1
     train_prop: default
@@ -352,7 +352,7 @@ Nb_AE4:
   notebook_tag: default
   overrides:
     run_dir: default
-    prepared_dataset: ./data
+    prepared_dataset: default
     dataset_seed: default
     scale: 1
     latent_dim: default
@@ -367,7 +367,7 @@ Nb_AE5:
   notebook_tag: default
   overrides:
     run_dir: default
-    prepared_dataset: ./data
+    prepared_dataset: default
     dataset_seed: default
     scale: 1
     latent_dim: default
