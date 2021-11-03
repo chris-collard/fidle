@@ -29,7 +29,7 @@ For more information, you can contact us at :
 [<img width="200px" style="vertical-align:middle" src="fidle/img/00-Mail_contact.svg"></img>](#top)
 
 Current Version : <!-- VERSION_BEGIN -->
-**2.0.27**
+**2.0.28**
 <!-- VERSION_END -->
 
 
