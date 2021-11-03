@@ -12,7 +12,7 @@
 # A simple module to run all notebooks with parameters overriding
 # Jean-Luc Parouty 2021
 
-import sys,os
+import sys,os,platform
 import json
 import datetime, time
 import nbformat
@@ -30,7 +30,7 @@ sys.path.append('..')
 import fidle.config as config
 import fidle.cookindex as cookindex
 
-VERSION = '1.2'
+VERSION = '1.4.1'
 
 start_time = {}
 end_time   = {}
@@ -77,7 +77,7 @@ def run_profile(profile_name, reset=False, filter=r'.*', top_dir='..'):
     # ---- Report file --------------------------------------------------------
     #
     metadata = config
-    metadata['host']    = os.uname()[1]
+    metadata['host']    = platform.uname()[1]
     metadata['profile'] = profile_name
 
     report_json  = top_dir + '/' + config['report_json' ]
@@ -223,8 +223,8 @@ def run_profile(profile_name, reset=False, filter=r'.*', top_dir='..'):
             # ---- Save
             save_dir = os.path.abspath( f'{top_dir}/{output_html}/{notebook_dir}' )
             os.makedirs(save_dir, mode=0o750, exist_ok=True)
-            with open(  f'{save_dir}/{output_name}.html', mode='w') as fp:
-                fp.write(body_html)
+            with open(  f'{save_dir}/{output_name}.html', mode='wb') as fp:
+                fp.write(body_html.encode("utf-8"))
             print(f'    - Saved {save_dir}/{output_name}.html')
 
         # ---- Clean all ------------------------------------------------------
