@@ -20,24 +20,25 @@ The objectives of this training are :
  - Apprehend the **academic computing environments** Tier-2 or Tier-1 with powerfull GPU
 
 For more information, see **https://fidle.cnrs.fr** :
+- **[Fidle site](https://fidle.cnrs.fr)**
 - **[Presentation of the training](https://fidle.cnrs.fr/presentation)**
 - **[Program 2021/2022](https://fidle.cnrs.fr/programme)**
 - [Subscribe to the list](https://fidle.cnrs.fr/listeinfo), to stay informed !
 - [Find us on youtube](https://fidle.cnrs.fr/youtube)
 
-For more information, you can contact us at : 
+For more information, you can contact us at :  
 [<img width="200px" style="vertical-align:middle" src="fidle/img/00-Mail_contact.svg"></img>](#top)
 
 Current Version : <!-- VERSION_BEGIN -->
-**2.0.28**
+**2.0.29**
 <!-- VERSION_END -->
 
 
 ## Course materials
 
-| | | |
-|:--:|:--:|:--:|
-| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://fidle.cnrs.fr/supports)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://fidle.cnrs.fr/notebooks)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://fidle.cnrs.fr/fidle-datasets.tar)**<br>All the needed datasets<br>(1.2 Go)|
+| | | | |
+|:--:|:--:|:--:|:--:|
+| **[<img width="50px" src="fidle/img/00-Fidle-pdf.svg"></img><br>Course slides](https://fidle.cnrs.fr/supports)**<br>The course in pdf format<br>(12 Mo)| **[<img width="50px" src="fidle/img/00-Notebooks.svg"></img><br>Notebooks](https://fidle.cnrs.fr/notebooks)**<br> &nbsp;&nbsp;&nbsp;&nbsp;Get a Zip or clone this repository &nbsp;&nbsp;&nbsp;&nbsp;<br>(40 Mo)| **[<img width="50px" src="fidle/img/00-Datasets-tar.svg"></img><br>Datasets](https://fidle.cnrs.fr/fidle-datasets.tar)**<br>All the needed datasets<br>(1.2 Go)|**[<img width="50px" src="fidle/img/00-Videos.svg"></img><br>Videos](https://fidle.cnrs.fr/youtube)**<br>&nbsp;&nbsp;&nbsp;&nbsp;Our Youtube channel&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;|
 
 Have a look about **[How to get and install](https://fidle.cnrs.fr/installation)** these notebooks and datasets.
 
