@@ -25,12 +25,13 @@ For more information, see **https://fidle.cnrs.fr** :
 - **[Program 2021/2022](https://fidle.cnrs.fr/programme)**
 - [Subscribe to the list](https://fidle.cnrs.fr/listeinfo), to stay informed !
 - [Find us on youtube](https://fidle.cnrs.fr/youtube)
+- [Corrected notebooks](https://fidle.cnrs.fr/done)
 
 For more information, you can contact us at :  
 [<img width="200px" style="vertical-align:middle" src="fidle/img/00-Mail_contact.svg"></img>](#top)
 
 Current Version : <!-- VERSION_BEGIN -->
-**2.0.29**
+**2.0.30**
 <!-- VERSION_END -->
 
 
